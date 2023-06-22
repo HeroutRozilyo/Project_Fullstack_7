@@ -1,5 +1,5 @@
 import React from 'react';
-import YouTubePlayer from './js/YouTubePlayer.js';
+import YouTubePlayer from './YouTubePlayer';
 
 const App = () => {
   const videoId = 'eBf0oXIo9k0'; // Replace with the actual YouTube video ID
