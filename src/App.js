@@ -1,15 +1,22 @@
-import React from 'react';
-import YouTubePlayer from './js/YouTubePlayer.js';
+import "./App.css";
+import Login from "../src/js/login.js";
+import Main from "../src/js/main.js";
 
-const App = () => {
-  const videoId = 'eBf0oXIo9k0'; // Replace with the actual YouTube video ID
+import Register from "./js/signup.js"; // Corrected import statement
 
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+function App() {
   return (
     <div>
-      <h1>My YouTube Player</h1>
-      <YouTubePlayer videoId={videoId} />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} /> {/* Corrected route path */}
+       
+      </Routes>
     </div>
   );
-};
+}
 
 export default App;
