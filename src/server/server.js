@@ -180,6 +180,8 @@ app.get('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
   getObjectById(userId, res, 'users', 'User');
 });
+
+
 app.post('/api/login', (req, res) => {
     const { Email, password } = req.body;
   

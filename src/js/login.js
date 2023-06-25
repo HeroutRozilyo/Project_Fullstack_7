@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../css/Login.css'; // import the CSS file
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // Add a state variable to track loading state
   const history = useNavigate();
@@ -20,7 +20,7 @@ function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ Email, password }),
       });
 
       if (!response.ok) {
@@ -35,7 +35,7 @@ function Login() {
         localStorage.setItem('user', JSON.stringify(user));
 
         // Redirect to the main screen or perform any necessary actions
-        history(`/users/${username}`);
+        history(`/users/${Email}`);
       } else {
         // Authentication failed
         throw new Error('Invalid login credentials');
@@ -54,9 +54,9 @@ function Login() {
       <form className="login-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
+          value={Email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
         />
         <input
           type="password"
