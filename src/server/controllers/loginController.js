@@ -1,24 +1,32 @@
+const pool = require('../config/database');
+
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
-  // Perform the database query
-  pool.query(
-    "SELECT * FROM useraccount WHERE Email = ? AND UserPassword = ?",
-    [Email, password],
-    (err, results) => {
-      if (err) {
-        console.error("Database error:", err);
-        return res.json({ success: false });
-      }
+  const { Email, password } = req.body;
 
-      // Check if a matching user record is found
-      if (results.length > 0) {
-        // Save user information in local storage
-        const user = results[0];
+  try {
+    const results = await new Promise((resolve, reject) => {
+      pool.query(
+        "SELECT * FROM useraccount WHERE Email = ? AND UserPassword = ?",
+        [Email, password],
+        (err, results) => {
+          if (err) {
+            console.error("Database error:", err);
+            reject(err);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
 
-        return res.json({ success: true, user });
-      } else {
-        return res.json({ success: false });
-      }
+    if (results.length > 0) {
+      const user = results[0];
+      return res.json({ success: true, user });
+    } else {
+      return res.json({ success: false });
     }
-  );
+  } catch (error) {
+    console.error("Database error:", error);
+    return res.json({ success: false });
+  }
 };

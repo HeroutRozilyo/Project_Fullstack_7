@@ -1,19 +1,14 @@
-const mysql = require("mysql2");
 const express = require("express");
-const loginRoutes = require("./routes/login");
+const loginRoutes = require("./routes/login.js");
+const pool = require("./config/database.js");
+const cors = require("cors");
 const app = express();
-
 const port = 3001;
 
-// Create a MySQL connection pool
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  port: 3306,
-  password: "123456",
-  database: "fullstack7",
-});
+app.use(cors());
+app.use(express.json());
 
+// Use login routes
 app.use("/api/login", loginRoutes);
 
 // Start the server
