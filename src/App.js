@@ -8,8 +8,9 @@ function App() {
   return (
     <div>
       <Routes>
+        {/* Set the default route to the login page */}
         <Route path="/" element={<Login />} />
-       
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/users/:username/main" element={<MainScreen />} />
       </Routes>

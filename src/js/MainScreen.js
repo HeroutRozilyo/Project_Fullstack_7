@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import PlaylistSection from './PlaylistSection.js';
+import SearchSongs from './SearchSong.js';
+import '../css/MainPage.css'; // import the CSS file for styling the MainPage
+
 
 function MainScreen() {
   const { username } = useParams(); // Access the user name from the URL parameters
@@ -14,18 +18,22 @@ function MainScreen() {
     }
   }, []);
 
-  return (
-    <div>
-      {user ? (
-        <div>
-          <h1>Welcome, {username}!</h1>
-          {/* Add your main screen content here */}
+ 
+
+    return (
+      <div className="main-page">
+        <div className="search-songs-section">
+          <h2>Search Songs</h2>
+          <SearchSongs />
         </div>
-      ) : (
-        <h1>User not logged in</h1>
-      )}
-    </div>
-  );
+        <div className="playlists-section">
+          <h2>Playlists</h2>
+          <PlaylistSection />
+        </div>
+      </div>
+    );
 }
+
+
 
 export default MainScreen;

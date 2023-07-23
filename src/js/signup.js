@@ -95,7 +95,7 @@ function Registration() {
           required
         />
         <div className="register-link">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to='/login'>Login</Link>
         </div>
         <button type="submit">{loading ? 'Loading...' : 'Register'}</button>
       </form>
