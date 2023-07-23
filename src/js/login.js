@@ -35,7 +35,9 @@ function Login() {
         localStorage.setItem('user', JSON.stringify(user));
 
         // Redirect to the main screen or perform any necessary actions
-        history(`/users/${Email}`);
+       // history(`/users/${Email}`);
+       history(`/users/${user.username}/main`); 
+
       } else {
         // Authentication failed
         throw new Error('Invalid login credentials');

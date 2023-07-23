@@ -1,16 +1,17 @@
-import "./App.css";
-import Login from "../src/js/login.js";
-import Main from "../src/js/main.js";
-import Register from "./js/signup.js";
-import { Route, Routes } from "react-router-dom";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Login from './js/login.js';
+import Register from './js/signup.js';
+import MainScreen from './js/MainScreen.js';
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
+       
         <Route path="/register" element={<Register />} />
+        <Route path="/users/:username/main" element={<MainScreen />} />
       </Routes>
     </div>
   );
