@@ -53,15 +53,11 @@ function Registration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      alert('Password and Confirm Password must match');
-      return;
-    }
 
     try {
       setLoading(true);
-
-      const response = await fetch('http://localhost:3001/api/register', {
+  
+      const response = await fetch('http://localhost:3001/api/signup', { // Update the URL here
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
