@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Use login routes
 app.use("/api/login", loginRoutes);
-app.use("/api/signup",signupRoutes);
+app.use("/api/register",signupRoutes);
 
 // Start the server
 app.listen(port, () => {
