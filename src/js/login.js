@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../css/Login.css'; // import the CSS file
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../css/Login.css"; // import the CSS file
 
 function Login() {
-  const [Email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Add a state variable to track loading state
   const history = useNavigate();
 
@@ -15,32 +15,31 @@ function Login() {
       // Show loading indicator
       setLoading(true);
 
-      const response = await fetch('http://localhost:3001/api/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ Email, password }),
       });
 
       if (!response.ok) {
         // Handle network errors
-        throw new Error('Network error');
+        throw new Error("Network error");
       }
 
       const { success, user } = await response.json();
 
       if (success) {
         // Save the user object in local storage
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
 
         // Redirect to the main screen or perform any necessary actions
-       // history(`/users/${Email}`);
-       history(`/users/${user.username}/main`); 
-
+        // history(`/users/${Email}`);
+        history(`/users/${user.username}/main`);
       } else {
         // Authentication failed
-        throw new Error('Invalid login credentials');
+        throw new Error("Invalid login credentials");
       }
     } catch (error) {
       // Show error message to user
@@ -69,7 +68,8 @@ function Login() {
         <div className="register-link">
           Don't have an account? <Link to="/register">Register</Link>
         </div>
-        <button type="submit">{loading ? 'Loading...' : 'Login'}</button> {/* Update button text based on loading state */}
+        <button type="submit">{loading ? "Loading..." : "Login"}</button>{" "}
+        {/* Update button text based on loading state */}
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../css/Signup.css";
 
 function Registration() {
-  const urlServer = "http://localhost:3001";
+  const urlServer = "http://localhost:3001/api";
   const [section, setSection] = useState(1);
   const [loading, setLoading] = useState(false);
   // First section fields
@@ -44,21 +44,17 @@ function Registration() {
     e.preventDefault();
 
     try {
+      const id = 201;
+      const userData = { id, email, password, dob, gender, username };
       setLoading(true);
 
-      const response = await fetch(urlServer + "/api/register", {
+      const response = await fetch("http://localhost:3001/api/register", {
         // Update the URL here
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          dob,
-          gender,
-        }),
+        body: JSON.stringify(userData),
       });
 
       if (!response.ok) {
@@ -66,11 +62,12 @@ function Registration() {
         throw new Error("Registration failed " + errorMessage);
       }
 
-      const { success, userId } = await response.json();
+      const { success, user } = await response.json();
 
       if (success) {
         //localStorage.setItem('userId', userId);
-        history("/login");
+        localStorage.setItem("user", JSON.stringify(user));
+        history(`/users/${user.username}/main`);
       } else {
         throw new Error("Registration failed");
       }
