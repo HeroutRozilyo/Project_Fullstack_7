@@ -15,7 +15,7 @@ function Registration() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+const [cardNo,setCardNo]=useState("");
   // Second section fields
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
@@ -44,8 +44,8 @@ function Registration() {
     e.preventDefault();
 
     try {
-      const id = 201;
-      const userData = { id, email, password, dob, gender, username };
+      
+      const userData = {  email, password, dob, gender, username,cardNo };
       setLoading(true);
 
       const response = await fetch("http://localhost:3001/api/register", {
@@ -62,12 +62,10 @@ function Registration() {
         throw new Error("Registration failed " + errorMessage);
       }
 
-      const { success, user } = await response.json();
+      const { success } = await response.json();
 
       if (success) {
-        //localStorage.setItem('userId', userId);
-        localStorage.setItem("user", JSON.stringify(user));
-        history(`/users/${user.username}/main`);
+        history("/login")
       } else {
         throw new Error("Registration failed");
       }
@@ -132,6 +130,13 @@ function Registration() {
               value={dob}
               onChange={(e) => setDob(e.target.value)}
               placeholder="Date of Birth"
+              required
+            />
+             <input
+              type="text"
+              value={cardNo}
+              onChange={(e) => setCardNo(e.target.value)}
+              placeholder="Credit card number"
               required
             />
             <select

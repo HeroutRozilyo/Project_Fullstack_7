@@ -1,6 +1,7 @@
 const express = require("express");
 const loginRoutes = require("./routes/loginR.js");
 const signupRoutes = require("./routes/signup.js");
+const songRoutes = require("./routes/songsR.js");
 const pool = require("./config/database.js");
 const cors = require("cors");
 const app = express();
@@ -19,6 +20,7 @@ pool.connect((err) => {
 // Use login routes
 app.use("/api/login", loginRoutes);
 app.use("/api/register", signupRoutes);
+app.use("/api/songs", songRoutes);
 
 // Start the server
 app.listen(port, () => {
