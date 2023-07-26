@@ -1,0 +1,115 @@
+/* Style for the menu bar */
+.menu-bar {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .menu-bar button {
+    color: #333; /* Set icon color */
+    background-color: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    margin: 2px; /* Add some space between the playlist cards */
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+  }
+  
+  
+.menu-bar button span {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .menu-bar button:hover span {
+    visibility: visible; /* Show the text on hover */
+  }
+  
+  .menu-bar button:hover {
+    color: rgb(23, 233, 226);
+
+  }
+  
+  /* Style for the playlist section */
+  .playlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Add some space between the menu bar and playlist section */
+  }
+  
+  .playlist-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .playlist-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px; /* Add some space between the playlist cards */
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .playlist-card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  
+  .playlist-card h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333; /* Change the font color of the playlist name */
+  }
+  
+ 
+  .playlist-card:hover {
+    transform: scale(1.1); /* Increase the size by 10% on hover */
+  }
+  
+  /* Style for the buttons */
+  .menu-bar button:hover {
+    transform: scale(1.2); /* Increase the size by 20% on hover */
+
+  }
+  
+  .create-playList {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .create-playList button {
+    color: #333; /* Set icon color */
+    background-color: #f0f0f0; /* Set background color for the icon buttons */
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 15px; /* Add padding around the icon buttons */
+    margin: 5px; /* Add space between the icon buttons */
+    border-radius: 10px; /* Add border radius to create rounded buttons */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow to the icon buttons */
+  }
+  
+  .create-playList button:hover {
+    transform: scale(1.2); /* Increase the size by 20% on hover */
+  }
