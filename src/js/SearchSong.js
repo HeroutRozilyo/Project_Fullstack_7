@@ -1,49 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import '../css/SearchSong.css';
 
 function SearchSongs() {
-  const url = "http://localhost:3001";
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
-    const fetchsongs = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/songs", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        setSearchResults(data);
-      } catch (error) {
-        console.error(error);
-        alert("An error occurred while fetching songs");
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm.trim() !== '' || isInputFocused) {
+        fetchSearchResults();
+      } else {
+        setSearchResults([]);
       }
-    };
-    fetchsongs();
-  }, []);
+    }, 500);
 
-  const handleSearch = () => {
-    setIsSearchClicked(true);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, isInputFocused]);
+
+  const fetchSearchResults = async () => {
+    try {
+      setIsSearching(true);
+
+      const response = await fetch(`http://localhost:3001/api/songs?search=${searchTerm}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      setSearchResults(data.slice(0, 10)); // Limit the number of results to 10 for performance
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while fetching songs');
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
     <div className="search-songs">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search for songs..."
-        onClick={() => setIsSearchClicked(true)}
-        onBlur={() => setIsSearchClicked(false)}
-      />
-      <button onClick={handleSearch}>Search</button>
-      {isSearchClicked && (
-        <ul>
+      <div className="search-container">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search for songs..."
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
+          className="search-input"
+        />
+        <button className="search-button" onClick={fetchSearchResults}>
+          Search
+        </button>
+      </div>
+      {isSearching ? (
+        <p>Loading...</p>
+      ) : (
+        <ul className="search-results-list">
           {searchResults.map((song) => (
-            <li key={song.id}>{song.SongName}</li>
+            <li key={song.id} className="search-result-item">
+              {song.SongName}
+            </li>
           ))}
         </ul>
       )}

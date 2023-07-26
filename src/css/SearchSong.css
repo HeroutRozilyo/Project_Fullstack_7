@@ -1,0 +1,52 @@
+/* SearchSongs.module.css */
+.search-songs {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+  }
+  
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 4px;
+  }
+  
+  .search-button {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  
+  .search-results-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+  }
+  
+  .search-result-item {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  /* Optional: Add hover effect for search results */
+  .search-result-item:hover {
+    background-color: #f5f5f5;
+    color:black;
+  }
+  

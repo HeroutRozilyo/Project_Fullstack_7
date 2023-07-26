@@ -1,24 +1,42 @@
 const pool = require("../config/database");
 
 exports.getAllSong = async (req, res) => {
+  const searchTerm = req.query.search;
+
   try {
-    const result = await new Promise((resolve, reject) => {
-      const query = `SELECT * FROM song`;
+    let songs;
 
-      // Execute the query and handle the result
-      pool.query(query, (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
+    if (searchTerm && searchTerm.trim() !== '') {
+      // If the search term is provided, perform the search
+      const searchTermWithWildcard = `%${searchTerm}%`;
+      const query = 'SELECT * FROM song WHERE SongName LIKE ?';
+      
+      songs = await new Promise((resolve, reject) => {
+        pool.query(query, [searchTermWithWildcard], (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
       });
-    });
-
-    if (result) {
-      res.status(200).json(result);
+    } else {
+      // If the search term is not provided or empty, fetch all songs
+      const query = 'SELECT * FROM song';
+      
+      songs = await new Promise((resolve, reject) => {
+        pool.query(query, (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
+      });
     }
+
+    res.status(200).json(songs);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while fetching songs" });
+    res.status(500).json({ error: 'An error occurred while fetching songs' });
   }
 };
