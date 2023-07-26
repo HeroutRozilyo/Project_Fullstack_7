@@ -4,6 +4,7 @@ function SearchSongs() {
   const url = "http://localhost:3001";
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
 
   useEffect(() => {
     const fetchsongs = async () => {
@@ -24,11 +25,8 @@ function SearchSongs() {
     fetchsongs();
   }, []);
 
-  const handleSearch = async () => {
-    try {
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
+  const handleSearch = () => {
+    setIsSearchClicked(true);
   };
 
   return (
@@ -38,13 +36,17 @@ function SearchSongs() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search for songs..."
+        onClick={() => setIsSearchClicked(true)}
+        onBlur={() => setIsSearchClicked(false)}
       />
       <button onClick={handleSearch}>Search</button>
-      <ul>
-        {searchResults.map((song) => (
-          <li key={song.id}>{song.SongName}</li>
-        ))}
-      </ul>
+      {isSearchClicked && (
+        <ul>
+          {searchResults.map((song) => (
+            <li key={song.id}>{song.SongName}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
