@@ -15,6 +15,7 @@
     "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.1",
     "react-youtube": "^10.1.0",
+    "rubik-font": "^0.0.3",
     "sequelize": "^6.32.1",
     "web-vitals": "^2.1.4"
   },
