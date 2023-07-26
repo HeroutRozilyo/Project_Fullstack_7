@@ -36,7 +36,7 @@ function Login() {
 
         // Redirect to the main screen or perform any necessary actions
         // history(`/users/${Email}`);
-        history(`/users/${user.username}/main`);
+        history(`/users/${user.userName}/main`);
       } else {
         // Authentication failed
         throw new Error("Invalid login credentials");

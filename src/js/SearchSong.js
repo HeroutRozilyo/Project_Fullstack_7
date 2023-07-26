@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 function SearchSongs() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const url = "http://localhost:3001";
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearch = () => {
-    // Implement the logic to fetch search results based on the searchTerm
-    // You can use an API like the YouTube Data API or any other music-related APIs
+  useEffect(() => {
+    const fetchsongs = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/songs", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        setSearchResults(data);
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while fetching songs");
+      }
+    };
+    fetchsongs();
+  }, []);
+
+  const handleSearch = async () => {
+    try {
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
   };
 
   return (
@@ -17,7 +40,11 @@ function SearchSongs() {
         placeholder="Search for songs..."
       />
       <button onClick={handleSearch}>Search</button>
-      {/* Display search results here */}
+      <ul>
+        {searchResults.map((song) => (
+          <li key={song.id}>{song.SongName}</li>
+        ))}
+      </ul>
     </div>
   );
 }
