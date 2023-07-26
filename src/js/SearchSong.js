@@ -6,43 +6,47 @@ function SearchSongs() {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const CACHE_KEY = 'songCache';
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchTerm.trim() !== '' || isInputFocused) {
-        fetchSearchResults();
-      } else {
-        setSearchResults([]);
+    // Fetch songs from the server and save to cache
+    const fetchSongsAndCache = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/songs`);
+        const data = await response.json();
+        const cacheData = {
+          timestamp: Date.now(),
+          data: data,
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+      } catch (error) {
+        console.error(error);
       }
-    }, 500);
+    };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, isInputFocused]);
+    fetchSongsAndCache();
+    const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
+    return () => clearInterval(interval);
+  }, []);
 
-  const fetchSearchResults = async () => {
-    try {
-      setIsSearching(true);
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm]);
 
-      const response = await fetch(`http://localhost:3001/api/songs?search=${searchTerm}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await response.json();
-      setSearchResults(data.slice(0, 10)); // Limit the number of results to 10 for performance
-    } catch (error) {
-      console.error(error);
-      alert('An error occurred while fetching songs');
-    } finally {
-      setIsSearching(false);
+  const handleSearch = () => {
+    // Perform search on the cached data
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (cachedData && cachedData.data) {
+      const filteredResults = cachedData.data.filter((song) =>
+        song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(filteredResults.slice(0, 10)); // Limit the number of results to 10 for performance
     }
   };
 
   return (
     <div className="search-songs">
-      <div className="search-container">
+      <div className="search-input-container">
         <input
           type="text"
           value={searchTerm}
@@ -50,23 +54,26 @@ function SearchSongs() {
           placeholder="Search for songs..."
           onFocus={() => setIsInputFocused(true)}
           onBlur={() => setIsInputFocused(false)}
-          className="search-input"
         />
-        <button className="search-button" onClick={fetchSearchResults}>
+        <button className="search-button" onClick={handleSearch}>
           Search
         </button>
       </div>
-      {isSearching ? (
-        <p>Loading...</p>
-      ) : (
-        <ul className="search-results-list">
-          {searchResults.map((song) => (
-            <li key={song.id} className="search-result-item">
-              {song.SongName}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="search-results">
+        {isSearching ? (
+          <p>Loading...</p>
+        ) : (
+          Array.isArray(searchResults) ? (
+            <ul>
+              {searchResults.map((song) => (
+                <li key={song.id}>{song.SongName}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>No search results found.</p>
+          )
+        )}
+      </div>
     </div>
   );
 }
