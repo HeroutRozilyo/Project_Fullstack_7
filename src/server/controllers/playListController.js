@@ -31,7 +31,7 @@ exports.getAllPlayListSongs = async (req, res) => {
       select SongID from contains
       where PlaylistID=(
       select PlaylistID from playlist
-      where PlaylistName="Pop"))`;
+      where PlaylistName="ED"))`;
 
       // Execute the query and handle the result
       pool.query(query, (error, results) => {
