@@ -26,12 +26,11 @@ exports.getAllPlaylist = async (req, res) => {
 exports.getAllPlayListSongs = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
+      const playID = req.params.id;
       const query = `select * from song
       where SongID in(
       select SongID from contains
-      where PlaylistID=(
-      select PlaylistID from playlist
-      where PlaylistName="Pop"))`;
+      where PlaylistID=${playID})`;
 
       // Execute the query and handle the result
       pool.query(query, (error, results) => {
