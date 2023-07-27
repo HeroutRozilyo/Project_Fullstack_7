@@ -6,9 +6,28 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+
+function SongDetails({ song, onClose }) {
+  return (
+    <div className="song-details">
+      <h3>{"Name: " + song.SongName}</h3>
+      <h4>{"Artist: " + song.ArtistID}</h4>
+      <h4>{"Length: " + song.SongLength}</h4>
+      <h4>{"Genre: " + song.Genre}</h4>
+      <button onClick={onClose}>
+        <FontAwesomeIcon icon={faWindowClose} />
+      </button>
+    </div>
+  );
+}
 
 function PlaylistPage() {
   const [playListSongs, setPlayListSongs] = useState([]);
+  const [selectedSong, setSelectedSong] = useState(null);
 
   const history = useNavigate();
   const playlist = JSON.parse(localStorage.getItem("playlist"));
@@ -39,6 +58,14 @@ function PlaylistPage() {
     // Find the selected playlist object
   };
 
+  const handleDetailsClick = (song) => {
+    setSelectedSong(song);
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedSong(null);
+  };
+
   return (
     <div>
       <img
@@ -47,15 +74,22 @@ function PlaylistPage() {
       />
       <h2>{playlist.PlaylistName}</h2>
       <h3>List of Songs:</h3>
-      {playListSongs.map((song) => (
-        <button
-          key={song.SongID}
-          className="playlist-card"
-          onClick={() => handlePlaylistClick(song.SongID)}
-        >
-          <h3>{song.SongName}</h3>
-        </button>
-      ))}
+      <div className="playlist-section">
+        {playListSongs.map((song) => (
+          <div key={song.SongID} className="playlist-card">
+            <h3>{song.SongName}</h3>
+            <button onClick={() => handleDetailsClick(song)}>
+              <FontAwesomeIcon icon={faInfoCircle} />
+            </button>
+          </div>
+        ))}
+      </div>
+      <button>
+        <FontAwesomeIcon icon={faPlay} />
+      </button>
+      {selectedSong && (
+        <SongDetails song={selectedSong} onClose={handleCloseDetails} />
+      )}
     </div>
   );
 }
