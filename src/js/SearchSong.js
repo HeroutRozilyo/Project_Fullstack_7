@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/SearchSong.css';
 
 function SearchSongs() {
@@ -7,6 +8,7 @@ function SearchSongs() {
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const searchRef = useRef();
+  const history = useNavigate();
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -38,12 +40,15 @@ function SearchSongs() {
     try {
       setIsSearching(true);
 
-      const response = await fetch(`http://localhost:3001/api/songs?search=${searchTerm}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/songs?search=${searchTerm}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       const data = await response.json();
       setSearchResults(data.slice(0, 10)); // Limit the number of results to 10 for performance
@@ -55,8 +60,12 @@ function SearchSongs() {
     }
   };
 
+  const handleSongSelect = (songCode) => {
+    // Navigate to the SongPage component with the selected song code
+    history(`/song/${songCode}`);
+  };
+
   return (
-    
     <div className="search-songs">
       <div className="search-input-container" ref={searchRef}>
         <input
@@ -77,7 +86,12 @@ function SearchSongs() {
         ) : (
           <ul>
             {searchResults.map((song) => (
-              <li key={song.id}>{song.SongName}</li>
+              <li
+                key={song.id}
+                onMouseDown={(e) => handleSongSelect(song.videoId, e)}
+              >
+                {song.SongName}
+              </li>
             ))}
           </ul>
         )}
