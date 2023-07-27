@@ -1,0 +1,15 @@
+.main-page {
+    display: grid;
+  }
+  
+
+  
+  .song-details-container {
+    background-color: black; /* Set the background color to black */
+    color: white; /* Set the text color to white for better visibility */
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 10px;
+  }
+  
+
+  

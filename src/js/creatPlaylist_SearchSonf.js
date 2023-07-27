@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/SearchSong.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function SearchSongs() {
+function SearchSongCreat(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -60,9 +63,10 @@ function SearchSongs() {
     }
   };
 
-  const handleSongSelect = (songCode) => {
-    // Navigate to the SongPage component with the selected song code
-    history(`/song/${songCode}`);
+  const handleSongSelect = (song) => {
+    console.log("Selected Song:", song); // Add this line to check if the function is triggered and getting the song data.
+    console.log("Song Name:", song.SongName);
+    props.onSongSelect(song);
   };
 
   return (
@@ -87,9 +91,12 @@ function SearchSongs() {
           <ul>
             {searchResults.map((song) => (
               <li
-                key={song.id}
-                onMouseDown={(e) => handleSongSelect(song.videoId, e)}
+                key={song.SongID}
+                onMouseDown={(e) => handleSongSelect(song, e)}
               >
+                <button onClick={(e) => handleSongSelect(song, e)}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
                 {song.SongName}
               </li>
             ))}
@@ -103,4 +110,4 @@ function SearchSongs() {
   );
 }
 
-export default SearchSongs;
+export default SearchSongCreat;

@@ -5,6 +5,7 @@ import pop from "../playListImage/Pop.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import {
   BrowserRouter as Router,
   Link,
@@ -48,10 +49,13 @@ function PlaylistSection() {
     history(`/users/${user.userName}/playlist/${selectedPlaylist.PlaylistID}`);
   };
 
+  const handleCreatPlaylist = () => {
+    history(`/users/${user.userName}/playlist/creatMyPlaylist`);
+  };
   return (
     <div className="playlist-section">
       <div className="menu-bar">
-        <button>
+        <button onClick={handleCreatPlaylist}>
           <FontAwesomeIcon icon={faPlus} />
           <span>Add Playlist</span>
         </button>

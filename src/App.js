@@ -4,6 +4,7 @@ import Login from "./js/login.js";
 import Register from "./js/signup.js";
 import MainScreen from "./js/MainScreen.js";
 import PlayListPage from "./js/PlayListPage.js";
+import CreatPlaylist from "./js/creatPlaylist.js";
 import SongPage from "./js/SongPage.js";
 
 function App() {
@@ -19,7 +20,11 @@ function App() {
           path="/users/:username/playlist/:id"
           element={<PlayListPage />}
         />
-         <Route path="/song/:songCode" element={<SongPage />} /> 
+        <Route
+          path="/users/:username/playlist/creatMyPlaylist"
+          element={<CreatPlaylist />}
+        />
+        <Route path="/song/:songCode" element={<SongPage />} />
       </Routes>
     </div>
   );

@@ -39,7 +39,7 @@ body {
   button {
     padding: 12px 20px;
     font-size: 16px;
-    background-color: #1db954;
+    background-color: rgb(29, 185, 84);
     color: #fff;
     border: none;
     border-radius: 50px;
@@ -97,3 +97,37 @@ body {
     color: #888;
   }
   
+
+  /* Add this CSS to style the plus icon button in the list items */
+.search-results ul li {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.search-results ul li button {
+  background-color:  rgb(29, 185, 84);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.search-results ul li button:hover {
+  background-color: #e0e0e0;
+}
+
+.search-results ul li button:focus {
+  outline: none;
+}
+
+.search-results ul li button svg {
+  width: 16px;
+  height: 16px;
+  color: #333; /* Change the color of the plus icon */
+}
