@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useNavigate } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SearchSongCreat from "./creatPlaylist_SearchSonf.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 
 import "../css/creatPlaylist.css";
 

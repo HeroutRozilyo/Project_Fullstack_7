@@ -1,47 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import YouTubePlayer from './YouTubePlayer';
-import { useParams, Link } from 'react-router-dom';
-import useLocalStorage from './useLocalStorage';
+import React, { useState, useEffect } from "react";
+import YouTubePlayer from "./YouTubePlayer";
+import { useParams, Link } from "react-router-dom";
+import useLocalStorage from "./useLocalStorage";
 
 const SongPage = () => {
   const { id } = useParams();
-  const [songList, setSongList] = useLocalStorage('songList', [], 10 * 60 * 1000);
+  const [songList, setSongList] = useLocalStorage(
+    "songList",
+    [],
+    10 * 60 * 1000
+  );
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(null);
   const [singerSongs, setSingerSongs] = useState([]);
 
   useEffect(() => {
     const fetchSingerSongs = async () => {
-        
       try {
         setIsFetching(true);
-  
+
         // Check if the song list exists in local storage and if it has expired
         const currentTime = new Date().getTime();
         if (songList.value.length > 0 && songList.expires > currentTime) {
         } else {
           // Fetch the song list from the API
           const response = await fetch(`http://localhost:3001/api/songs`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           });
-  
+
           if (!response.ok) {
-            throw new Error('Failed to fetch songs');
+            throw new Error("Failed to fetch songs");
           }
-  
+
           const data = await response.json();
-          set
-  
+
           // Filter the songs by the same singer as the currently playing song
-          const currentSong = data.find(song => song.videoId === id);
+          const currentSong = data.find((song) => song.videoId === id);
           const singerId = currentSong ? currentSong.AristID : null;
-          const songsBySameSinger = data.filter(song => song.AristID === singerId);
-  
+          const songsBySameSinger = data.filter(
+            (song) => song.AristID === singerId
+          );
+
           setSingerSongs(songsBySameSinger);
-  
+
           // Save the filtered song list to local storage with a new expiration time
           const expires = currentTime + 10 * 60 * 1000; // 10 minutes from now
           setSongList({ value: songsBySameSinger, expires });
@@ -52,10 +56,9 @@ const SongPage = () => {
         setIsFetching(false);
       }
     };
-  
+
     fetchSingerSongs();
   }, [id, songList, setSongList]);
-  
 
   return (
     <div className="song-page">
