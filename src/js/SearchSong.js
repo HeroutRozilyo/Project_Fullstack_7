@@ -9,25 +9,30 @@ function SearchSongs() {
   const CACHE_KEY = 'songCache';
   const history = useNavigate();
   useEffect(() => {
-    // Fetch songs from the server and save to cache
-    const fetchSongsAndCache = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/songs`);
-        const data = await response.json();
-        const cacheData = {
-          timestamp: Date.now(),
-          data: data,
-        };
-        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchSongsAndCache();
-    const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
-    return () => clearInterval(interval);
+    // Check if the cache exists and is not empty
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (!cachedData || !cachedData.data || cachedData.data.length === 0) {
+      // Fetch songs from the server and save to cache
+      const fetchSongsAndCache = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/api/songs`);
+          const data = await response.json();
+          const cacheData = {
+            timestamp: Date.now(),
+            data: data,
+          };
+          localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      fetchSongsAndCache();
+      const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
+      return () => clearInterval(interval);
+    }
   }, []);
+  
 
   useEffect(() => {
     handleSearch();
@@ -40,7 +45,7 @@ function SearchSongs() {
       const filteredResults = cachedData.data.filter((song) =>
         song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSearchResults(filteredResults.slice(0, 10)); // Limit the number of results to 10 for performance
+      setSearchResults(filteredResults); // Limit the number of results to 10 for performance
     }
   };
   const handleSongSelect = (songCode) => {

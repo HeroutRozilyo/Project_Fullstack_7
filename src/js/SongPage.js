@@ -1,61 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import YouTubePlayer from './YouTubePlayer';
 import { useParams, Link } from 'react-router-dom';
-import useLocalStorage from './useLocalStorage';
 
 const SongPage = () => {
   const { id } = useParams();
-  const [songList, setSongList] = useLocalStorage('songList', [], 10 * 60 * 1000);
-  const [isFetching, setIsFetching] = useState(false);
+  const [songList, setSongList] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState(null);
   const [singerSongs, setSingerSongs] = useState([]);
 
+  const CACHE_KEY = 'songCache';
+
   useEffect(() => {
-    const fetchSingerSongs = async () => {
-        
-      try {
-        setIsFetching(true);
-  
-        // Check if the song list exists in local storage and if it has expired
-        const currentTime = new Date().getTime();
-        if (songList.value.length > 0 && songList.expires > currentTime) {
-        } else {
-          // Fetch the song list from the API
-          const response = await fetch(`http://localhost:3001/api/songs`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error('Failed to fetch songs');
-          }
-  
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (!cachedData || !cachedData.data || cachedData.data.length === 0) {
+      const fetchSongsAndCache = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/api/songs`);
           const data = await response.json();
-          set
-  
-          // Filter the songs by the same singer as the currently playing song
-          const currentSong = data.find(song => song.videoId === id);
-          const singerId = currentSong ? currentSong.AristID : null;
-          const songsBySameSinger = data.filter(song => song.AristID === singerId);
-  
-          setSingerSongs(songsBySameSinger);
-  
-          // Save the filtered song list to local storage with a new expiration time
-          const expires = currentTime + 10 * 60 * 1000; // 10 minutes from now
-          setSongList({ value: songsBySameSinger, expires });
+          const cacheData = {
+            timestamp: Date.now(),
+            data: data,
+          };
+          localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+          setSongList(data); // Set the state with the fetched data
+          setIsFetching(false); // Set isFetching to false after fetching
+        } catch (error) {
+          setIsFetching(false); // Set isFetching to false in case of an error
+          setError(error.message);
+          console.error(error);
         }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-  
-    fetchSingerSongs();
-  }, [id, songList, setSongList]);
-  
+      };
+
+      fetchSongsAndCache();
+      const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
+      return () => clearInterval(interval);
+    } else {
+      // If data is already in cache, set the state with the cached data and stop fetching
+      setSongList(cachedData.data); // Set the state with the data property of cachedData
+      setIsFetching(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Filter the songs by the same singer when the id or songList changes
+    handleSearch();
+  }, [id, songList]);
+
+  const handleSearch = () => {
+    const currentSong = songList.find((song) => song.videoId === id);
+    const singerId = currentSong ? currentSong.ArtistID : null;
+    const songsBySameSinger = songList.filter((song) => (song.ArtistID === singerId&& song.videoId !== id));
+    setSingerSongs(songsBySameSinger);
+  };
 
   return (
     <div className="song-page">
@@ -70,7 +67,6 @@ const SongPage = () => {
             <ul>
               {singerSongs.map((song) => (
                 <li key={song.id}>
-                  {/* Add a Link to each song to navigate to its page */}
                   <Link to={`/song/${song.videoId}`}>{song.SongName}</Link>
                 </li>
               ))}
