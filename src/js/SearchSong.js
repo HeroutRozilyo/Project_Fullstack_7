@@ -1,73 +1,54 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "../css/SearchSong.css";
-
+import { Link, useNavigate } from "react-router-dom";
 function SearchSongs() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const searchRef = useRef();
+  const CACHE_KEY = "songCache";
   const history = useNavigate();
-
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchTerm.trim() !== "" || isInputFocused) {
-        fetchSearchResults();
-      } else {
-        setSearchResults([]);
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, isInputFocused]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchResults([]);
-        setIsInputFocused(false);
+    // Fetch songs from the server and save to cache
+    const fetchSongsAndCache = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/songs`);
+        const data = await response.json();
+        const cacheData = {
+          timestamp: Date.now(),
+          data: data,
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    fetchSongsAndCache();
+    const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchSearchResults = async () => {
-    try {
-      setIsSearching(true);
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm]);
 
-      const response = await fetch(
-        `http://localhost:3001/api/songs?search=${searchTerm}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+  const handleSearch = () => {
+    // Perform search on the cached data
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (cachedData && cachedData.data) {
+      const filteredResults = cachedData.data.filter((song) =>
+        song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-
-      const data = await response.json();
-      setSearchResults(data.slice(0, 10)); // Limit the number of results to 10 for performance
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while fetching songs");
-    } finally {
-      setIsSearching(false);
+      setSearchResults(filteredResults.slice(0, 10)); // Limit the number of results to 10 for performance
     }
   };
-
   const handleSongSelect = (songCode) => {
-    // Navigate to the SongPage component with the selected song code
     history(`/song/${songCode}`);
   };
-
   return (
     <div className="search-songs">
-      <div className="search-input-container" ref={searchRef}>
+      <div className="search-input-container">
         <input
           type="text"
           value={searchTerm}
@@ -76,14 +57,14 @@ function SearchSongs() {
           onFocus={() => setIsInputFocused(true)}
           onBlur={() => setIsInputFocused(false)}
         />
-        <button className="search-button" onClick={fetchSearchResults}>
+        <button className="search-button" onClick={handleSearch}>
           Search
         </button>
       </div>
       <div className="search-results">
         {isSearching ? (
           <p>Loading...</p>
-        ) : (
+        ) : Array.isArray(searchResults) ? (
           <ul>
             {searchResults.map((song) => (
               <li
@@ -94,9 +75,8 @@ function SearchSongs() {
               </li>
             ))}
           </ul>
-        )}
-        {searchResults.length === 0 && !isSearching && isInputFocused && (
-          <p className="no-results">No results found.</p>
+        ) : (
+          <p>No search results found.</p>
         )}
       </div>
     </div>
