@@ -49,3 +49,48 @@ exports.getAllPlayListSongs = async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching songs" });
   }
 };
+
+const insertToContain = (playlistId, songId) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO contains (PlaylistID , SongID) VALUES (? ,?)`,
+      [playlistId, songId],
+      (err, resu) => {
+        if (err) {
+          console.error("Insert into useraccount table error:", err);
+          reject(err);
+        } else {
+          resolve("true");
+        }
+      }
+    );
+  });
+};
+exports.addPlaylist = async (req, res) => {
+  try {
+    const { userid, playlistid, playlistName, nameIMAG, selectedSongs } =
+      req.body;
+    const result = new Promise((resolve, reject) => {
+      pool.query(
+        "INSERT INTO playlist (UserID, PlaylistID, PlaylistName, nameIMAG) VALUES (?, ?, ?, ?) ",
+        [userid, playlistid, playlistName, nameIMAG],
+        (err, resu) => {
+          if (err) {
+            console.error("Insert into useraccount table error:", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
+    await Promise.all(
+      selectedSongs.map((song) => insertToContain(playlistid, song.SongID))
+    );
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ success: false });
+  }
+};

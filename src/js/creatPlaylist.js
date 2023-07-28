@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useNavigate } from "react";
 import { useParams } from "react-router-dom";
 import SearchSongCreat from "./creatPlaylist_SearchSonf.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,9 +25,12 @@ function SongDetails({ song, onClose, onDelete }) {
 }
 
 function MainScreen() {
+  const history = useNavigate();
+
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [user, setUser] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [PlaylistName, setPlaylistName] = useState("my_playlist");
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -69,6 +72,41 @@ function MainScreen() {
     }
   };
 
+  const handleCreatMyPlaylist = async (e) => {
+    e.preventDefault();
+
+    const timestamp = Date.now(); // Get the current timestamp in milliseconds
+    const userid = user.UserID;
+    const playlistid = timestamp.toString().slice(-5);
+    const playlistName = PlaylistName;
+    const nameIMAG = Math.floor(Math.random() * 3) + 1;
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/playList/creatPlayList",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userid,
+            playlistid,
+            playlistName,
+            nameIMAG,
+            selectedSongs,
+          }),
+        }
+      );
+      const data = await response.json();
+      alert("Success! your playlist created");
+      history(`/users/${user.userName}/main`);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while fetching songs");
+    }
+  };
+
   return (
     <div className="main-page">
       <div className="search-songs-section">
@@ -89,6 +127,19 @@ function MainScreen() {
           ))
         ) : (
           <p>No songs selected</p>
+        )}
+        {selectedSongs.length > 0 && (
+          <div className="cc">
+            <input
+              type="text"
+              placeholder="Enter playlist name"
+              value={PlaylistName}
+              onChange={(e) => setPlaylistName(e.target.value)}
+            />
+            <button onClick={handleCreatMyPlaylist}>
+              {"create my playlist"}
+            </button>
+          </div>
         )}
       </div>
       {selected && (
