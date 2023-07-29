@@ -3,8 +3,10 @@ const pool = require("../config/database");
 exports.getAllPlaylist = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
-      const query = `SELECT * FROM playlist`;
+      //const query = `SELECT * from playlist`;
 
+      const query =
+        "SELECT PlaylistID, MIN(PlaylistName) AS PlaylistName, MIN(nameIMAG) AS nameIMAG, MIN(nameIMAG) AS nameIMAG, FROM playlist GROUP BY PlaylistID;";
       // Execute the query and handle the result
       pool.query(query, (error, results) => {
         if (error) {
@@ -88,6 +90,31 @@ exports.addPlaylist = async (req, res) => {
     await Promise.all(
       selectedSongs.map((song) => insertToContain(playlistid, song.SongID))
     );
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ success: false });
+  }
+};
+
+exports.LikePlaylist = async (req, res) => {
+  try {
+    const { userid, playlistid, playlistName, nameIMAG } = req.body;
+    const result = new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT * FROM playlist WHERE PlaylistID = ? AND UserID = ?`,
+        [playlistid, userid],
+        (err, resu) => {
+          if (err) {
+            console.error("Insert into useraccount table error:", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.error("Database error:", error);

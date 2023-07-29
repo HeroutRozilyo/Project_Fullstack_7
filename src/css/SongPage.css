@@ -1,0 +1,129 @@
+/* SongPage.css */
+body {
+    background-color: #333;
+  }
+  
+  /* SongPage.css */
+  .now-playing {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%;
+    margin-top: 50px; /* Adjust the margin-top to move it down */
+  }
+  
+  .song-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .now-playing {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: relative;
+    margin-right: 30px;
+    margin-top: 30px; /* Adjust the margin-top to move it down */
+  }
+  
+  .youtube-player {
+    width: 300px; /* Adjust the player size as needed */
+    height: 200px;
+  }
+  
+  .song-info {
+    margin-left: 20px;
+  }
+  
+  h2 {
+    font-size: 32px;
+    color: #1db954; /* Spotify green color */
+    margin-bottom: 10px;
+  }
+  
+  .song-info h2 {
+    position: absolute;
+    top: -40px; /* Adjust the top distance as needed */
+    left: 10px; /* Adjust the left distance as needed */
+    margin: 0; /* Remove any default margins to avoid extra space */
+  }
+  
+  h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #1db954; /* Spotify green color */
+  }
+  
+  a:hover {
+    color: #0f813d; /* Darker green on hover */
+  }
+  
+  p {
+    font-size: 18px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for the Other Songs section */
+  .other-songs {
+    background-color: #f1f1f1; /* Light gray background */
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 25%;
+    padding: 20px;
+    margin-top: 30px; /* Adjust the margin-top to move it down */
+  }
+  
+  /* Styling for the song list items */
+  .other-songs li {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Styling for the link to other songs */
+  .other-songs li a {
+    color: #333;
+    font-size: 16px;
+    flex-grow: 1;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Styling for the play icon */
+  .other-songs li::after {
+    content: "▶"; /* Play icon */
+    color: #1db954; /* Spotify green color */
+    font-size: 18px;
+    padding: 10px;
+    flex-shrink: 0;
+  }
+  

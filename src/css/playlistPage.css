@@ -1,113 +1,97 @@
-/* CSS for PlaylistPage */
-.playlist-section {
+/* playlistPage.module.css */
+
+.page-container {
+    background-color: white;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
   
-  .playlist-card {
+  .content-container {
+    background-color: black;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+    max-width: 600px;
+  }
+  
+  img {
+    max-width: 100%;
+  }
+  
+  h2 {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+  
+  h3 {
+    margin-bottom: 10px;
+  }
+  
+  .playlist-section {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .playlist-card {
+    background-color: #222;
+    border-radius: 8px;
     padding: 10px;
-    border-radius: 5px;
-    width: 200px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column; /* Display the items in a column instead of a row */
+    align-items: center; /* Center the items horizontally */
   }
   
   .playlist-card h3 {
-    margin-bottom: 5px;
+    margin: 0;
+    color: white;
+
+    margin-bottom: 10px; /* Add space between the song name and the icon */
+
   }
   
   .playlist-card button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
+    background: none;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    color: #fff;
+    font-size: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+    margin-top: 10px; /* Add space between the song name and the icon */
+
   }
   
   .playlist-card button span {
     opacity: 0;
-    pointer-events: none; /* Prevent the span from capturing events */
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    padding: 5px;
-    white-space: nowrap;
-    display: none;
-    visibility: hidden;
+    transition: opacity 0.2s;
+
   }
   
   .playlist-card button:hover span {
     opacity: 1;
-    display: block;
-    visibility: visible;
+  }
+
+  .love {
+    position: relative; /* Add a position property for the child (span) to work with visibility */
   }
   
-  .song-details {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    width: 300px;
-    position: absolute;
-    top: 50px;
-    right: 20px;
-    background-color: #f0f0f0;
-  }
-  
-  .song-details h3 {
-    margin-bottom: 10px;
-  }
-  
-  .song-details button {
-    display: flex;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .song-details button .icon {
-    font-size: 24px;
-  }
-  
-  .song-details button span {
+  .love span {
     visibility: hidden;
- }
+    position: absolute; /* Position the span relative to its parent (button) */
+    bottom: -20px; /* Adjust this value to control the distance between the icon and span */
+    left: 50%; /* Center the span horizontally */
+    transform: translateX(-50%); /* Center the span horizontally */
+    color: white; /* Set the text color to white */
+    font-size: 14px; /* Adjust the font size as needed */
+  }
   
-  .song-details button:hover {
-    background-color: #e0e0e0;
+  .love button:hover span {
     visibility: visible;
   }
-  
-  .song-details button:hover span {
-visibility: visible;  }
-  
-  button {
-    display: flex;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #e0e0e0;
+  .love button span {
+    visibility: hidden;
+
   }
   

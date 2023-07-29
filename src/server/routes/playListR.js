@@ -8,5 +8,6 @@ const playListController = require("../controllers/playListController");
 router.get("/", playListController.getAllPlaylist);
 router.get("/:id", playListController.getAllPlayListSongs);
 router.post("/creatPlayList", playListController.addPlaylist);
+//router.post("/Like", playListController.LikePlaylist);
 
 module.exports = router;

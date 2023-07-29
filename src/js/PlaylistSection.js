@@ -52,6 +52,10 @@ function PlaylistSection() {
   const handleCreatPlaylist = () => {
     history(`/users/${user.userName}/playlist/creatMyPlaylist`);
   };
+  if (!Array.isArray(playListResults)) {
+    return <p>No playlist results found.</p>;
+  }
+
   return (
     <div className="playlist-section">
       <div className="menu-bar">

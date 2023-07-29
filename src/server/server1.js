@@ -24,6 +24,31 @@ app.use("/api/register", signupRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/playList", playListRoutes);
 
+app.post("/api/playList/Like", (req, res) => {
+  try {
+    const { userid, playlistid, playlistName, nameIMAG } = req.body;
+    const result = new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT * FROM playlist WHERE PlaylistID = ? AND UserID = ?`,
+        [playlistid, userid],
+        (err, resu) => {
+          if (err) {
+            console.error("Insert into useraccount table error:", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ success: false });
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
