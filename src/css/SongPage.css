@@ -1,24 +1,25 @@
 /* SongPage.css */
-body{
+body {
     background-color: #333;
-}
-/* SongPage.css */
-.now-playing {
-    flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 50%;
   }
-.song-page {
+  
+  /* SongPage.css */
+  .now-playing {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%;
+    margin-top: 50px; /* Adjust the margin-top to move it down */
+  }
+  
+  .song-page {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     padding: 20px;
-
-   
   }
   
   .now-playing {
@@ -30,12 +31,12 @@ body{
     margin-bottom: 40px;
     position: relative;
     margin-right: 30px;
+    margin-top: 30px; /* Adjust the margin-top to move it down */
   }
   
   .youtube-player {
     width: 300px; /* Adjust the player size as needed */
     height: 200px;
-   
   }
   
   .song-info {
@@ -47,12 +48,14 @@ body{
     color: #1db954; /* Spotify green color */
     margin-bottom: 10px;
   }
+  
   .song-info h2 {
     position: absolute;
     top: -40px; /* Adjust the top distance as needed */
     left: 10px; /* Adjust the left distance as needed */
     margin: 0; /* Remove any default margins to avoid extra space */
   }
+  
   h3 {
     font-size: 24px;
     color: #333;
@@ -87,13 +90,12 @@ body{
   /* Styling for the Other Songs section */
   .other-songs {
     background-color: #f1f1f1; /* Light gray background */
-   
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
     flex: 1;
-  max-width: 25%;
-  padding: 20px;
+    max-width: 25%;
+    padding: 20px;
+    margin-top: 30px; /* Adjust the margin-top to move it down */
   }
   
   /* Styling for the song list items */
