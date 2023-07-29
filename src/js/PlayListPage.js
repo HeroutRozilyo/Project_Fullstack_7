@@ -125,7 +125,7 @@ function PlaylistPage() {
               <button onClick={() => handleDetailsClick(song)}>
                 <FontAwesomeIcon icon={faInfoCircle} />
               </button>
-              <button onClick={handlePlaysing(song.videoId)}>
+              <button onClick={(e) => handlePlaysing(song.videoId, e)}>
                 <FontAwesomeIcon icon={faPlay} />
               </button>
             </div>

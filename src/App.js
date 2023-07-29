@@ -32,7 +32,7 @@ function App() {
           element={<PlayPlaylist />}
         />
         <Route
-          path="/users/:username/playlist/:id/play/:videoid"
+          path="/users/:username/playlist/:id/play/:songCode"
           element={<PlayPlaylist />}
         />
         <Route
