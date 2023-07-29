@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import '../css/SearchSong.css';
+import React, { useState, useEffect } from "react";
+import "../css/SearchSong.css";
 import { Link, useNavigate } from "react-router-dom";
 
 function SearchSongs() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isMouseOverResults, setIsMouseOverResults] = useState(false); // New state variable
-  const CACHE_KEY = 'songCache';
+  const CACHE_KEY = "songCache";
   const history = useNavigate();
 
   useEffect(() => {

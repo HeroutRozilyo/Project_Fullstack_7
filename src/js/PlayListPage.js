@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import "../css/playlistPage.css";
 
 function SongDetails({ song, onClose }) {
   return (
@@ -66,30 +68,67 @@ function PlaylistPage() {
     setSelectedSong(null);
   };
 
+  const handleLike = async (e) => {
+    e.preventDefault();
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const userid = userData.UserID;
+    const playlistid = playlist.PlaylistID;
+    const playlistName = playlist.PlaylistName;
+    const nameIMAG = playlist.nameIMAG;
+
+    try {
+      const response = await fetch("http://localhost:3001/api/playList/Like", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userid,
+          playlistid,
+          playlistName,
+          nameIMAG,
+        }),
+      });
+      const data = await response.json();
+      //The playlist is already in your favorites list
+      alert("The playlist has been added to your favorites list");
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while fetching songs");
+    }
+  };
+
   return (
-    <div>
-      <img
-        src={require(`../playListImage/${playlist.nameIMAG}.png`)}
-        alt={playlist.PlaylistName}
-      />
-      <h2>{playlist.PlaylistName}</h2>
-      <h3>List of Songs:</h3>
-      <div className="playlist-section">
-        {playListSongs.map((song) => (
-          <div key={song.SongID} className="playlist-card">
-            <h3>{song.SongName}</h3>
-            <button onClick={() => handleDetailsClick(song)}>
-              <FontAwesomeIcon icon={faInfoCircle} />
-            </button>
-          </div>
-        ))}
+    <div className="page-container">
+      <div className="content-container">
+        <img
+          src={require(`../playListImage/${playlist.nameIMAG}.png`)}
+          alt={playlist.PlaylistName}
+        />
+        <h2>{playlist.PlaylistName}</h2>
+        <h3>List of Songs:</h3>
+        <div className="playlist-section">
+          {playListSongs.map((song) => (
+            <div key={song.SongID} className="playlist-card">
+              <h3>{song.SongName}</h3>
+              <button onClick={() => handleDetailsClick(song)}>
+                <FontAwesomeIcon icon={faInfoCircle} />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button className="love" onClick={handleLike}>
+          <FontAwesomeIcon icon={faHeart} />
+          <span>Mark as my favorite</span>
+        </button>
+        <button>
+          <FontAwesomeIcon icon={faPlay} />
+        </button>
+        {selectedSong && (
+          <SongDetails song={selectedSong} onClose={handleCloseDetails} />
+        )}
       </div>
-      <button>
-        <FontAwesomeIcon icon={faPlay} />
-      </button>
-      {selectedSong && (
-        <SongDetails song={selectedSong} onClose={handleCloseDetails} />
-      )}
     </div>
   );
 }

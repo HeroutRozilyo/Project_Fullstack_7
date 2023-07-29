@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import YouTubePlayer from './YouTubePlayer';
-import { useParams, Link } from 'react-router-dom';
-import '../css/SongPage.css'
+import React, { useState, useEffect } from "react";
+import YouTubePlayer from "./YouTubePlayer";
+import { useParams, Link } from "react-router-dom";
+import "../css/SongPage.css";
 
 const SongPage = () => {
   const { id } = useParams();
@@ -10,7 +10,7 @@ const SongPage = () => {
   const [error, setError] = useState(null);
   const [singerSongs, setSingerSongs] = useState([]);
 
-  const CACHE_KEY = 'songCache';
+  const CACHE_KEY = "songCache";
 
   useEffect(() => {
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -51,7 +51,9 @@ const SongPage = () => {
   const handleSearch = () => {
     const currentSong = songList.find((song) => song.videoId === id);
     const singerId = currentSong ? currentSong.ArtistID : null;
-    const songsBySameSinger = songList.filter((song) => (song.ArtistID === singerId&& song.videoId !== id));
+    const songsBySameSinger = songList.filter(
+      (song) => song.ArtistID === singerId && song.videoId !== id
+    );
     setSingerSongs(songsBySameSinger);
   };
 
