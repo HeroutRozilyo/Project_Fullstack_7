@@ -33,6 +33,7 @@ function PlaylistPage() {
 
   const history = useNavigate();
   const playlist = JSON.parse(localStorage.getItem("playlist"));
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchPlayList = async () => {
@@ -70,7 +71,6 @@ function PlaylistPage() {
 
   const handleLike = async (e) => {
     e.preventDefault();
-    const userData = JSON.parse(localStorage.getItem("user"));
 
     const userid = userData.UserID;
     const playlistid = playlist.PlaylistID;
@@ -99,6 +99,10 @@ function PlaylistPage() {
     }
   };
 
+  const handlePlayPlaylist = () => {
+    history(`/users/${userData.userName}/playlist/${playlist.PlaylistID}/play`);
+  };
+
   return (
     <div className="page-container">
       <div className="content-container">
@@ -122,7 +126,7 @@ function PlaylistPage() {
           <FontAwesomeIcon icon={faHeart} />
           <span>Mark as my favorite</span>
         </button>
-        <button>
+        <button onClick={handlePlayPlaylist}>
           <FontAwesomeIcon icon={faPlay} />
         </button>
         {selectedSong && (

@@ -6,6 +6,7 @@ import MainScreen from "./js/MainScreen.js";
 import PlayListPage from "./js/PlayListPage.js";
 import CreatPlaylist from "./js/creatPlaylist.js";
 import SongPage from "./js/SongPage.js";
+import PlayPlaylist from "./js/playlist_play.js";
 
 function App() {
   return (
@@ -25,10 +26,13 @@ function App() {
           path="/users/:username/playlist/creatMyPlaylist"
           element={<CreatPlaylist />}
         />
+        <Route
+          path="/users/:username/playlist/:id/play"
+          element={<PlayPlaylist />}
+        />
         <Route path="/song/:songCode" element={<SongPage />} />
       </Routes>
     </div>
   );
 }
-
 export default App;

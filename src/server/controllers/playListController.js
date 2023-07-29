@@ -100,22 +100,43 @@ exports.addPlaylist = async (req, res) => {
 exports.LikePlaylist = async (req, res) => {
   try {
     const { userid, playlistid, playlistName, nameIMAG } = req.body;
-    const result = new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT * FROM playlist WHERE PlaylistID = ? AND UserID = ?`,
-        [playlistid, userid],
-        (err, resu) => {
-          if (err) {
-            console.error("Insert into useraccount table error:", err);
-            reject(err);
+
+    // Check if the playlist with given playlistid and userid already exists
+    pool.query(
+      `SELECT * FROM playlist WHERE PlaylistID = ? AND UserID = ?`,
+      [playlistid, userid],
+      (err, rows) => {
+        if (err) {
+          console.error("Error executing SELECT query:", err);
+          res.status(500).json({ success: false });
+        } else {
+          // If the query returns no rows, the combination doesn't exist, so insert it
+          if (rows.length === 0) {
+            pool.query(
+              `INSERT INTO playlist (PlaylistID, UserID, PlaylistName, nameIMAG) VALUES (?, ?, ?, ?)`,
+              [playlistid, userid, playlistName, nameIMAG],
+              (insertErr) => {
+                if (insertErr) {
+                  console.error(
+                    "Error inserting into playlist table:",
+                    insertErr
+                  );
+                  res.status(500).json({ success: false });
+                } else {
+                  res.status(200).json({ success: true });
+                }
+              }
+            );
           } else {
-            resolve();
+            // Combination already exists, handle the case as needed
+            res.status(200).json({
+              success: true,
+              message: "Playlist already exists for the user.",
+            });
           }
         }
-      );
-    });
-
-    res.status(200).json({ success: true });
+      }
+    );
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ success: false });
