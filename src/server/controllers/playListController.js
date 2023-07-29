@@ -123,7 +123,11 @@ exports.LikePlaylist = async (req, res) => {
                   );
                   res.status(500).json({ success: false });
                 } else {
-                  res.status(200).json({ success: true });
+                  res.status(200).json({
+                    success: true,
+                    message:
+                      "The playlist has been added to your favorites list",
+                  });
                 }
               }
             );

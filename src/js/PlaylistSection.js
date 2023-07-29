@@ -56,6 +56,10 @@ function PlaylistSection() {
     return <p>No playlist results found.</p>;
   }
 
+  const handleLikePlaylistPage = () => {
+    history(`/users/${user.userName}/playlist/favorite`);
+  };
+
   return (
     <div className="playlist-section">
       <div className="menu-bar">
@@ -63,7 +67,7 @@ function PlaylistSection() {
           <FontAwesomeIcon icon={faPlus} />
           <span>Add Playlist</span>
         </button>
-        <button>
+        <button onClick={handleLikePlaylistPage}>
           <FontAwesomeIcon icon={faHeart} />
           <span>Like Playlist</span>
         </button>

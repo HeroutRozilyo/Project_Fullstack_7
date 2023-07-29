@@ -91,8 +91,9 @@ function PlaylistPage() {
         }),
       });
       const data = await response.json();
-      //The playlist is already in your favorites list
-      alert("The playlist has been added to your favorites list");
+      if (data.message) {
+        alert(data.message);
+      }
     } catch (error) {
       console.error(error);
       alert("An error occurred while fetching songs");
@@ -101,6 +102,11 @@ function PlaylistPage() {
 
   const handlePlayPlaylist = () => {
     history(`/users/${userData.userName}/playlist/${playlist.PlaylistID}/play`);
+  };
+  const handlePlaysing = (id) => {
+    history(
+      `/users/${userData.userName}/playlist/${playlist.PlaylistID}/play/${id}`
+    );
   };
 
   return (
@@ -118,6 +124,9 @@ function PlaylistPage() {
               <h3>{song.SongName}</h3>
               <button onClick={() => handleDetailsClick(song)}>
                 <FontAwesomeIcon icon={faInfoCircle} />
+              </button>
+              <button onClick={handlePlaysing(song.videoId)}>
+                <FontAwesomeIcon icon={faPlay} />
               </button>
             </div>
           ))}
