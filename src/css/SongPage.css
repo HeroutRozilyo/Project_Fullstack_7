@@ -3,7 +3,14 @@ body {
     background-color: #333;
   }
   
-  /* SongPage.css */
+  .song-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start; /* Align items to the top of the container */
+    justify-content: center;
+    padding: 20px;
+  }
+  
   .now-playing {
     flex: 1;
     display: flex;
@@ -12,26 +19,7 @@ body {
     align-items: center;
     max-width: 50%;
     margin-top: 50px; /* Adjust the margin-top to move it down */
-  }
-  
-  .song-page {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  
-  .now-playing {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-    position: relative;
-    margin-right: 30px;
-    margin-top: 30px; /* Adjust the margin-top to move it down */
+    margin-right: 20px; /* Add space between "Now Playing" and "Other Songs" */
   }
   
   .youtube-player {
@@ -41,18 +29,16 @@ body {
   
   .song-info {
     margin-left: 20px;
+    position: relative; /* Set position to relative for the container */
   }
   
   h2 {
     font-size: 32px;
     color: #1db954; /* Spotify green color */
     margin-bottom: 10px;
-  }
-  
-  .song-info h2 {
-    position: absolute;
-    top: -40px; /* Adjust the top distance as needed */
-    left: 10px; /* Adjust the left distance as needed */
+    position: absolute; /* Set position to absolute for the "Now Playing" header */
+    top: -400px; /* Position the header at the top */
+    left: -300px; /* Position the header at the left */
     margin: 0; /* Remove any default margins to avoid extra space */
   }
   
@@ -95,7 +81,8 @@ body {
     flex: 1;
     max-width: 25%;
     padding: 20px;
-    margin-top: 30px; /* Adjust the margin-top to move it down */
+    margin-top: 80px; /* Adjust the margin-top to move it down by 3cm */
+    margin-left: 20px; /* Add space between "Now Playing" and "Other Songs" */
   }
   
   /* Styling for the song list items */
@@ -125,5 +112,34 @@ body {
     font-size: 18px;
     padding: 10px;
     flex-shrink: 0;
+  }
+  
+  /* Media query for smaller screens */
+@media (max-width: 1200px) {
+    .now-playing,
+    .other-songs {
+      max-width: 100%; /* Components will take full width on smaller screens */
+    }
+  
+    .now-playing {
+      flex-direction: column; /* Stack the components on top of each other */
+      align-items: flex-start; /* Align the components to the top-left corner */
+      margin-right: 0; /* Reset margin-right for smaller screens */
+      margin-bottom: 20px; /* Add space between "Now Playing" and "Other Songs" */
+    }
+  
+    .youtube-player {
+      width: 70%; /* Adjust the player size for smaller screens */
+      height: 300px;
+    }
+  
+    .song-info h2 {
+      position: static; /* Reset position for smaller screens */
+      margin-bottom: 10px; /* Add margin-bottom for smaller screens */
+    }
+  
+    .other-songs {
+      margin-left: 0; /* Reset margin-left for smaller screens */
+    }
   }
   
