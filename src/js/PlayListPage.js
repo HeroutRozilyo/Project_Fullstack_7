@@ -11,6 +11,7 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+
 import "../css/playlistPage.css";
 
 function SongDetails({ song, onClose }) {
@@ -30,7 +31,7 @@ function SongDetails({ song, onClose }) {
 function PlaylistPage() {
   const [playListSongs, setPlayListSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
-
+  const [firstSong, setFirstSong] = useState(null);
   const history = useNavigate();
   const playlist = JSON.parse(localStorage.getItem("playlist"));
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -49,6 +50,9 @@ function PlaylistPage() {
         );
         const data = await response.json();
         setPlayListSongs(data);
+        if (data.length > 0) {
+          setFirstSong(data[0]);
+        }
       } catch (error) {
         console.error(error);
         alert("An error occurred while fetching songs");
@@ -135,7 +139,7 @@ function PlaylistPage() {
           <FontAwesomeIcon icon={faHeart} />
           <span>Mark as my favorite</span>
         </button>
-        <button onClick={handlePlayPlaylist}>
+        <button onClick={(e) => handlePlaysing(firstSong.videoId, e)}>
           <FontAwesomeIcon icon={faPlay} />
         </button>
         {selectedSong && (
