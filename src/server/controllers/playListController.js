@@ -146,3 +146,59 @@ exports.LikePlaylist = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
+exports.getAllLikePlaylist = async (req, res) => {
+  try {
+    const userid = req.params.id;
+    const result = await new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT * FROM playlist WHERE UserID = ?`,
+        [userid],
+        (err, rows) => {
+          if (err) {
+            // <-- Corrected the variable name here
+            reject(err);
+          } else {
+            resolve(rows); // <-- Corrected the variable name here
+          }
+        }
+      );
+    });
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ error: "Playlist not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching songs" });
+  }
+};
+
+exports.removeFromFavorite = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const playlistId = req.params.LikeD;
+    const result = await new Promise((resolve, reject) => {
+      pool.query(
+        "DELETE FROM playlist WHERE PlaylistID = ? AND UserID = ?",
+        [playlistId, userId],
+        (err, rows) => {
+          if (err) {
+            // <-- Corrected the variable name here
+            reject(err);
+          } else {
+            resolve(rows); // <-- Corrected the variable name here
+          }
+        }
+      );
+    });
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ error: "Playlist not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching songs" });
+  }
+};

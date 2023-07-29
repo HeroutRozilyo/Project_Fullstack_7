@@ -9,5 +9,7 @@ router.get("/", playListController.getAllPlaylist);
 router.get("/:id", playListController.getAllPlayListSongs);
 router.post("/creatPlayList", playListController.addPlaylist);
 router.post("/Like", playListController.LikePlaylist);
+router.get("/Like/:id", playListController.getAllLikePlaylist);
+router.delete("/Like/:id/:LikeD", playListController.removeFromFavorite);
 
 module.exports = router;
