@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import YouTubePlayer from './YouTubePlayer';
 import { useParams, Link } from 'react-router-dom';
+import '../css/SongPage.css'
 
 const SongPage = () => {
   const { id } = useParams();
@@ -56,26 +57,29 @@ const SongPage = () => {
 
   return (
     <div className="song-page">
-      <h2>Now Playing</h2>
-      <YouTubePlayer videoId={id} />
-      {isFetching ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <h3>Other Songs by the Same Singer</h3>
-          {singerSongs.length > 0 ? (
-            <ul>
-              {singerSongs.map((song) => (
-                <li key={song.id}>
-                  <Link to={`/song/${song.videoId}`}>{song.SongName}</Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No other songs found for this singer.</p>
-          )}
+      <div className="now-playing">
+        <YouTubePlayer videoId={id} />
+        <div className="song-info">
+          <h2>Now Playing</h2>
+          {/* Display song information like SongName, Artist, etc. */}
         </div>
-      )}
+      </div>
+
+      <div className="other-songs">
+        <h3>Other Songs by the Same Artist</h3>
+        {isFetching ? (
+          <p>Loading...</p>
+        ) : (
+          <ul>
+            {singerSongs.map((song) => (
+              <li key={song.id}>
+                <Link to={`/song/${song.videoId}`}>{song.SongName}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       {error && <p>Error: {error}</p>}
     </div>
   );
