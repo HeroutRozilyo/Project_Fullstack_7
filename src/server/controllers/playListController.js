@@ -3,10 +3,10 @@ const pool = require("../config/database");
 exports.getAllPlaylist = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
-      //const query = `SELECT * from playlist`;
+      //  const query = `SELECT * from playlist`;
 
       const query =
-        "SELECT PlaylistID, MIN(PlaylistName) AS PlaylistName, MIN(nameIMAG) AS nameIMAG, MIN(nameIMAG) AS nameIMAG, FROM playlist GROUP BY PlaylistID;";
+        "SELECT PlaylistID, MIN(PlaylistName) AS PlaylistName, MIN(nameIMAG) AS nameIMAG, MIN(UserID) AS UserID FROM playlist GROUP BY PlaylistID;";
       // Execute the query and handle the result
       pool.query(query, (error, results) => {
         if (error) {

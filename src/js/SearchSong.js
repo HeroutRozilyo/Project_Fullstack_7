@@ -82,7 +82,7 @@ function SearchSongs() {
             <ul>
               {searchResults.map((song) => (
                 <li
-                  key={song.id}
+                  key={song.SongID}
                   onMouseDown={(e) => handleSongSelect(song.videoId, e)}
                 >
                   {song.SongName}
