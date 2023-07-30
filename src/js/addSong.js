@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import "../css/addSong.css"
+import React, { useState } from "react";
+import "../css/addSong.css";
 function AddSongForm() {
-  const [artistName, setArtistName] = useState('');
-  const [songName, setSongName] = useState('');
-  const [songLength, setSongLength] = useState('');
-  const [genre, setGenre] = useState('');
-  const [videoId, setVideoId] = useState('');
+  const [artistName, setArtistName] = useState("");
+  const [songName, setSongName] = useState("");
+  const [songLength, setSongLength] = useState("");
+  const [genre, setGenre] = useState("");
+  const [videoId, setVideoId] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/api/songs', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/songs/songs", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ArtistID: artistName,
@@ -26,14 +26,14 @@ function AddSongForm() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add song');
+        throw new Error("Failed to add song");
       }
 
       // Song added successfully, you can show a success message or redirect to the all songs page
-      alert('Song added successfully');
+      alert("Song added successfully");
     } catch (error) {
       console.error(error);
-      alert('An error occurred while adding the song');
+      alert("An error occurred while adding the song");
     }
   };
 
@@ -87,7 +87,7 @@ function AddSongForm() {
           />
         </label>
         <div className="submit-row">
-        <button type="submit">Add Song</button>
+          <button type="submit">Add Song</button>
         </div>
       </form>
     </div>

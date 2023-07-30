@@ -6,11 +6,11 @@ exports.getAllSong = async (req, res) => {
   try {
     let songs;
 
-    if (searchTerm && searchTerm.trim() !== '') {
+    if (searchTerm && searchTerm.trim() !== "") {
       // If the search term is provided, perform the search
       const searchTermWithWildcard = `%${searchTerm}%`;
-      const query = 'SELECT * FROM song WHERE SongName LIKE ?';
-      
+      const query = "SELECT * FROM song WHERE SongName LIKE ?";
+
       songs = await new Promise((resolve, reject) => {
         pool.query(query, [searchTermWithWildcard], (error, results) => {
           if (error) {
@@ -22,8 +22,8 @@ exports.getAllSong = async (req, res) => {
       });
     } else {
       // If the search term is not provided or empty, fetch all songs
-      const query = 'SELECT * FROM song';
-      
+      const query = "SELECT * FROM song";
+
       songs = await new Promise((resolve, reject) => {
         pool.query(query, (error, results) => {
           if (error) {
@@ -37,15 +37,13 @@ exports.getAllSong = async (req, res) => {
 
     res.status(200).json(songs);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching songs' });
+    res.status(500).json({ error: "An error occurred while fetching songs" });
   }
 };
 // Assuming you have the necessary imports and setup for your songController file
 
-
-
 exports.deleteSong = async (req, res) => {
-  const songID = req.params.songID;
+  const songID = req.params.id;
 
   try {
     // Find the song by its ID in the database
@@ -80,12 +78,11 @@ exports.deleteSong = async (req, res) => {
     return res.status(200).json({ message: "Song deleted successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "An error occurred while deleting the song" });
+    return res
+      .status(500)
+      .json({ error: "An error occurred while deleting the song" });
   }
 };
-
-
-
 
 exports.addSong = async (req, res) => {
   const { ArtistID, SongName, SongLength, Genre, videoId } = req.body;
@@ -94,7 +91,7 @@ exports.addSong = async (req, res) => {
     let artistID;
 
     // Check if the provided artist already exists in the database
-    const artistQuery = 'SELECT * FROM artist WHERE ArtistName = ?';
+    const artistQuery = "SELECT * FROM artist WHERE ArtistName = ?";
     const artistExists = await new Promise((resolve, reject) => {
       pool.query(artistQuery, [ArtistID], (error, results) => {
         if (error) {
@@ -107,10 +104,10 @@ exports.addSong = async (req, res) => {
 
     if (artistExists) {
       // If the artist exists, get the existing ArtistID
-      artistID = artistExists[0].ArtistID;
+      artistID = artistExists[0].ArtistID; // Use results here instead of artistExists
     } else {
       // If the artist does not exist, create a new artist record
-      const createArtistQuery = 'INSERT INTO artist (ArtistName) VALUES (?)';
+      const createArtistQuery = "INSERT INTO artist (ArtistName) VALUES (?)";
       const createArtistResult = await new Promise((resolve, reject) => {
         pool.query(createArtistQuery, [ArtistID], (error, result) => {
           if (error) {
@@ -127,7 +124,7 @@ exports.addSong = async (req, res) => {
 
     // Add the new song to the database
     const addSongQuery =
-      'INSERT INTO song (ArtistID, SongName, SongLength, Genre, videoId) VALUES (?, ?, ?, ?, ?)';
+      "INSERT INTO song (ArtistID, SongName, SongLength, Genre, videoId) VALUES (?, ?, ?, ?, ?)";
     await new Promise((resolve, reject) => {
       pool.query(
         addSongQuery,
@@ -142,9 +139,9 @@ exports.addSong = async (req, res) => {
       );
     });
 
-    res.status(201).json({ message: 'Song added successfully' });
+    res.status(201).json({ message: "Song added successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while adding the song' });
+    res.status(500).json({ error: "An error occurred while adding the song" });
   }
 };
