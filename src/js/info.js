@@ -3,11 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import '../css/info.css';
 import profilePicture from '../playListImage/profileImage.png';
+import { Link, useNavigate } from "react-router-dom";
+
 
 function Info() {
   const user = JSON.parse(localStorage.getItem('user'));
   user.Dob = new Date(user.Dob).toISOString().split('T')[0];
   console.log(user);
+  const history=useNavigate();
   const [editableFields, setEditableFields] = useState({
     UserName: false,
     Email: false,
@@ -78,6 +81,31 @@ function Info() {
         }));
       } else {
         throw new Error(data.message);
+      }
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/${user.UserID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Step 3: Clear the user data from local storage
+        localStorage.removeItem("user");
+
+        // Step 4: Redirect the user to the login page or any other desired page
+        // (You can use react-router's useNavigate hook or history object to navigate)
+        // Replace '/login' with the desired page URL
+        history("/login");
+      } else {
+        throw new Error("Failed to delete user and data");
       }
     } catch (error) {
       alert(`Error: ${error.message}`);
@@ -284,7 +312,11 @@ function Info() {
             )}
           </span>
         </p>
+
       </div>
+      <button className="delete-user-button" onClick={handleDeleteUser}>
+        Delete User and Data
+      </button>
     </div>
   );
   

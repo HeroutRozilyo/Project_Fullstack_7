@@ -62,4 +62,55 @@ exports.updatePassword = (userId, newPassword) => {
   });
 };
 
+exports.deleteUserAndData = async (req, res) => {
+  const userID = req.params.userID;
+
+  try {
+    // Step 1: Delete user's playlists and songs in the playlists (contains table)
+    const deletePlaylistsQuery = "DELETE FROM playlist WHERE UserID = ?";
+    await new Promise((resolve, reject) => {
+      pool.query(deletePlaylistsQuery, [userID], (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    // Step 2: Delete user from the useraccount table
+    const deleteUserQuery = "DELETE FROM useraccount WHERE UserID = ?";
+    await new Promise((resolve, reject) => {
+      pool.query(deleteUserQuery, [userID], (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    // Return success response
+    res.status(200).json({ message: "User and related data deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while deleting the user and data" });
+  }
+};
+exports.getAllUsers = async (req, res) => {
+  try {
+    pool.query('SELECT * FROM useraccount', (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch users' });
+      } else {
+        res.json(results);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+};
+
 

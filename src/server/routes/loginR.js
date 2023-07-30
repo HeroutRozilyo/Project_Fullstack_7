@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Require controller module
-const { loginUser, updateUser, updatePassword } = require("../controllers/loginController"); // Make sure to import the updatePassword function
+const { loginUser, updateUser, updatePassword,deleteUserAndData,getAllUsers} = require("../controllers/loginController"); // Make sure to import the updatePassword function
 
 // Login route
 router.post("/", loginUser);
@@ -36,5 +36,8 @@ router.put("/password/:userId", async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 });
+
+router.delete("/:userID", deleteUserAndData);
+router.get('/users', getAllUsers);
 
 module.exports = router;

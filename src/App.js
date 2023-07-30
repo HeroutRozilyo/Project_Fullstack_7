@@ -12,17 +12,22 @@ import Toolbar from "./js/ToolBar.js";
 import Info from "./js/info.js";
 import AddSong from "./js/addSong.js";
 import AllSongs from "./js/AllSongs.js"
+import InfoAdmin from "./js/InfoAdmin.js"
+import UserList from "./js/UserList.js"
+
 function App() {
   return (
     <div>
       <Toolbar></Toolbar>
       <Routes>
+   
         {/* Set the default route to the login page */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/users/:username/main" element={<MainScreen />} />
         <Route path="/allSongs" element={<AllSongs />} />
+        <Route path="/userList" element={<UserList />} />
         <Route path="/add-song" element={<AddSong />}/>
         <Route path="/users/:username/playlist/:id" element={<PlayListPage />} />
         <Route path="/users/:username/info" element={<Info />} />
@@ -41,7 +46,10 @@ function App() {
           element={<FavoritePlaylist />}
         />
         <Route path="/song/:songCode" element={<SongPage />} />
+        <Route path="/user/:userID" element={<InfoAdmin/>} />
+     
       </Routes>
+
     </div>
   );
 }

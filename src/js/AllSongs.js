@@ -37,7 +37,9 @@ function AllSongs() {
       setIsManager(true);
     }
   }, []);
-
+  const handleSongSelect = (songCode) => {
+    history(`/song/${songCode}`);
+  };
   const handleDeleteSong = async (songID) => {
     try {
       // Perform the delete request to the server
@@ -70,8 +72,13 @@ function AllSongs() {
       )}
       <div className="songs-list">
         {songs.map((song) => (
-          <div key={song.SongID} className="song-card">
-            <FontAwesomeIcon icon={faMusic} className="song-icon" />
+          <div key={song.SongID}    className="song-card">
+             
+           <FontAwesomeIcon
+              icon={faMusic}
+              onMouseDown={() => handleSongSelect(song.videoId)} // Use handleSongSelect here to navigate to the play page
+              className="song-icon"
+            />
             <h3>{song.SongName}</h3>
             <p>{song.AristID}</p>
             {isManager && (

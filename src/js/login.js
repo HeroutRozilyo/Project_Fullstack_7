@@ -49,7 +49,7 @@ function Login() {
         // Check if the user is an admin
         if (user.isAdmin) {
           // Redirect to the admin page
-          history("/AllSongs");
+          history("/UserList");
         } else {
           // Redirect to the main screen for regular users
           history(`/users/${user.UserName}/main`);
