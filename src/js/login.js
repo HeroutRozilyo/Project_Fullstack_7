@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Login.css"; // import the CSS file
 
@@ -7,6 +7,18 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Add a state variable to track loading state
   const history = useNavigate();
+  useEffect(() => {
+    // Check if the user is already logged out (local storage is empty)
+    if (localStorage.getItem("user")) {
+      // Clear local storage to ensure the user data is removed
+      localStorage.clear();
+      
+      // Use replace to prevent navigating back to the previous page
+      window.location.replace("/");
+      history.replace("/");
+    }
+  }, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,9 +46,14 @@ function Login() {
         // Save the user object in local storage
         localStorage.setItem("user", JSON.stringify(user));
 
-        // Redirect to the main screen or perform any necessary actions
-        // history(`/users/${Email}`);
-        history(`/users/${user.userName}/main`);
+        // Check if the user is an admin
+        if (user.isAdmin) {
+          // Redirect to the admin page
+          history("/AllSongs");
+        } else {
+          // Redirect to the main screen for regular users
+          history(`/users/${user.UserName}/main`);
+        }
       } else {
         // Authentication failed
         throw new Error("Invalid login credentials");

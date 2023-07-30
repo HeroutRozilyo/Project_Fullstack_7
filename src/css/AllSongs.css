@@ -1,0 +1,62 @@
+/* AllSongs.css */
+.all-songs-page {
+    padding: 20px;
+  }
+  
+  .songs-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .song-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #514f4f;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .song-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #1db954;
+  }
+  
+  h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #000000; /* Change the text color to black */
+  }
+  h1 {
+    font-size: 50px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #bdbdbd; /* Change the text color to black */
+  }
+  
+  p {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #000000; /* Change the text color to black */
+  }
+  
+  button {
+    background-color: #1db954;
+    color: #000000; /* Change the text color to black */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #19a049;
+  }
+  

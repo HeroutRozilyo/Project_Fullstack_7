@@ -51,7 +51,7 @@ const Playlist_Play = () => {
   useEffect(() => {
     if (!id && songList.length > 0) {
       setPlayListSong(songList);
-      history.push(`/users/${userData.userName}/playlist/${playlist.PlaylistID}/play/${songList[0].videoId}`);
+      history.push(`/users/${userData.UserName}/playlist/${playlist.PlaylistID}/play/${songList[0].videoId}`);
     }
   }, [id, songList, history, playlist.PlaylistID]);
 

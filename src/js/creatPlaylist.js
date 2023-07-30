@@ -101,7 +101,7 @@ function MainScreen() {
       );
       const data = await response.json();
       alert("Success! your playlist created");
-      history(`/users/${user.userName}/main`);
+      history(`/users/${user.UserName}/main`);
     } catch (error) {
       console.error(error);
       alert("An error occurred while fetching songs");
