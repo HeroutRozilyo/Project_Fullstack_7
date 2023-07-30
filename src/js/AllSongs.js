@@ -14,13 +14,12 @@ function AllSongs() {
   useEffect(() => {
     const fetchSongs = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/songs/${songID}`, {
-  method: 'DELETE',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
+        const response = await fetch('http://localhost:3001/api/songs', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         const data = await response.json();
         setSongs(data);
       } catch (error) {
