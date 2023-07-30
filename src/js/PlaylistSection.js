@@ -46,18 +46,18 @@ function PlaylistSection() {
     );
 
     localStorage.setItem("playlist", JSON.stringify(selectedPlaylist));
-    history(`/users/${user.userName}/playlist/${selectedPlaylist.PlaylistID}`);
+    history(`/users/${user.UserName}/playlist/${selectedPlaylist.PlaylistID}`);
   };
 
   const handleCreatPlaylist = () => {
-    history(`/users/${user.userName}/playlist/creatMyPlaylist`);
+    history(`/users/${user.UserName}/playlist/creatMyPlaylist`);
   };
   if (!Array.isArray(playListResults)) {
     return <p>No playlist results found.</p>;
   }
 
   const handleLikePlaylistPage = () => {
-    history(`/users/${user.userName}/playlist/favorite`);
+    history(`/users/${user.UserName}/playlist/favorite`);
   };
 
   return (

@@ -1,97 +1,168 @@
 /* playlistPage.module.css */
 
 .page-container {
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .content-container {
-    background-color: black;
-    padding: 20px;
-    border-radius: 8px;
-    color: white;
-    max-width: 600px;
-  }
-  
-  img {
-    max-width: 100%;
-  }
-  
-  h2 {
-    margin-top: 20px;
-    font-size: 24px;
-  }
-  
-  h3 {
-    margin-bottom: 10px;
-  }
-  
-  .playlist-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+  background-color: #181818;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .playlist-card {
-    background-color: #222;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    display: flex;
-    flex-direction: column; /* Display the items in a column instead of a row */
-    align-items: center; /* Center the items horizontally */
-  }
-  
-  .playlist-card h3 {
-    margin: 0;
-    color: white;
+.content-container {
+  background-color: #121212;
+  padding: 20px;
+  border-radius: 8px;
+  color: #fff;
+  width: 90%; /* Set the width to 90% of the container */
+  max-width: 600px;
+}
 
-    margin-bottom: 10px; /* Add space between the song name and the icon */
+.playlist-header {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  /* Add a higher z-index value to bring the header above the pseudo-element */
+  z-index: 1;
+  position: absolute;
+  top: 20px; /* Adjust the top value to control the vertical position */
+  left: 20px; /* Adjust the left value to move the header to the left side */
+}
 
-  }
-  
-  .playlist-card button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-    margin-top: 10px; /* Add space between the song name and the icon */
+.playlist-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  margin-right: 20px;
+}
 
-  }
-  
-  .playlist-card button span {
-    opacity: 0;
-    transition: opacity 0.2s;
 
-  }
-  
-  .playlist-card button:hover span {
-    opacity: 1;
-  }
 
-  .love {
-    position: relative; /* Add a position property for the child (span) to work with visibility */
-  }
-  
-  .love span {
-    visibility: hidden;
-    position: absolute; /* Position the span relative to its parent (button) */
-    bottom: -20px; /* Adjust this value to control the distance between the icon and span */
-    left: 50%; /* Center the span horizontally */
-    transform: translateX(-50%); /* Center the span horizontally */
-    color: white; /* Set the text color to white */
-    font-size: 14px; /* Adjust the font size as needed */
-  }
-  
-  .love button:hover span {
-    visibility: visible;
-  }
-  .love button span {
-    visibility: hidden;
+.playlist-info {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  position: absolute;
+  top: 80px; /* Adjust the top value to control the vertical position */
+  left: 20px; /* Adjust the left value to move the info to the left side */
+}
 
-  }
-  
+.playlist-info h2 {
+  margin: 0;
+  font-size: 24px;
+  color:#fff
+}
+
+.love {
+  background-color: #1db954;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.love span {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.playlist-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minmax value to control the minimum and maximum width of each song card */
+  grid-gap: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.song-card {
+  background-color: #282828;
+  border-radius: 8px;
+  padding: 20px; /* Increase padding for more space inside the card */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  max-width: 100%; /* Adjust the width to make the card wider */
+}
+
+/* Add a hover effect to make the card scale up slightly on hover */
+.song-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+
+
+
+.song-card h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.song-card p {
+  margin: 0;
+  color: #b3b3b3;
+  font-size: 14px;
+}
+
+.song-card button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.song-card button span {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.song-card button:hover span {
+  opacity: 1;
+}
+
+.play-all-button {
+  background-color: #1db954;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.play-all-button span {
+  margin-left: 10px;
+}
+
+/* Add a background image for the big picture effect */
+
+.page-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://your-big-picture-url.jpg");
+  background-size: cover;
+  filter: blur(4px);
+  z-index: -1;
+}
+.buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap value as per your preference */
+}
+

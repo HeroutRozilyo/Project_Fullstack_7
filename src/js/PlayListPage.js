@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle, faPlay, faMusic } from "@fortawesome/free-solid-svg-icons";
+
 
 import "../css/playlistPage.css";
 
@@ -35,7 +35,8 @@ function PlaylistPage() {
   const history = useNavigate();
   const playlist = JSON.parse(localStorage.getItem("playlist"));
   const userData = JSON.parse(localStorage.getItem("user"));
-
+  const imageurl=require(`../playListImage/${playlist.nameIMAG}.png`);
+  console.log(playlist.PlaylistName);
   useEffect(() => {
     const fetchPlayList = async () => {
       try {
@@ -105,49 +106,50 @@ function PlaylistPage() {
   };
 
   const handlePlayPlaylist = () => {
-    history(`/users/${userData.userName}/playlist/${playlist.PlaylistID}/play`);
+    history(`/users/${userData.UserName}/playlist/${playlist.PlaylistID}/play`);
   };
   const handlePlaysing = (id) => {
     history(
-      `/users/${userData.userName}/playlist/${playlist.PlaylistID}/play/${id}`
+      `/users/${userData.UserName}/playlist/${playlist.PlaylistID}/play/${id}`
     );
   };
 
   return (
-    <div className="page-container">
+    
+    <div className="page-container"style={{ backgroundImage: `url(${imageurl})` }}>
       <div className="content-container">
-        <img
-          src={require(`../playListImage/${playlist.nameIMAG}.png`)}
-          alt={playlist.PlaylistName}
-        />
-        <h2>{playlist.PlaylistName}</h2>
-        <h3>List of Songs:</h3>
+       
         <div className="playlist-section">
           {playListSongs.map((song) => (
-            <div key={song.SongID} className="playlist-card">
+            <div key={song.SongID} className="song-card">
+              <FontAwesomeIcon icon={faMusic} size="3x" />
               <h3>{song.SongName}</h3>
+              <p>{song.SongLength}</p>
               <button onClick={() => handleDetailsClick(song)}>
                 <FontAwesomeIcon icon={faInfoCircle} />
               </button>
-              <button onClick={(e) => handlePlaysing(song.videoId, e)}>
+              <button onClick={() => handlePlaysing(song.videoId)}>
                 <FontAwesomeIcon icon={faPlay} />
               </button>
             </div>
           ))}
         </div>
-        <button className="love" onClick={handleLike}>
-          <FontAwesomeIcon icon={faHeart} />
-          <span>Mark as my favorite</span>
-        </button>
-        <button onClick={(e) => handlePlaysing(firstSong.videoId, e)}>
-          <FontAwesomeIcon icon={faPlay} />
-        </button>
+        <div className="buttons-container">
+  <button className="love" onClick={handleLike}>
+    <FontAwesomeIcon icon={faHeart} />
+    <span>Mark as my favorite</span>
+  </button>
+  <button className="play-all-button" onClick={handlePlayPlaylist}>
+    <FontAwesomeIcon icon={faPlay} />
+    <span>Play All</span>
+  </button>
+</div>
         {selectedSong && (
           <SongDetails song={selectedSong} onClose={handleCloseDetails} />
         )}
       </div>
     </div>
   );
-}
 
+}
 export default PlaylistPage;

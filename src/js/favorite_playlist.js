@@ -48,7 +48,7 @@ function FavoritePlaylist() {
 
     localStorage.setItem("playlist", JSON.stringify(selectedPlaylist));
     history(
-      `/users/${userData.userName}/playlist/${selectedPlaylist.PlaylistID}`
+      `/users/${userData.UserName}/playlist/${selectedPlaylist.PlaylistID}`
     );
   };
 

@@ -1,25 +1,24 @@
 /* Style for the menu bar */
 .menu-bar {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .menu-bar button {
-    color: #333; /* Set icon color */
-    background-color: transparent;
-    border: none;
-    font-size: 32px;
-    cursor: pointer;
-    margin: 2px; /* Add some space between the playlist cards */
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  }
+.menu-bar button {
+  color: #333; /* Set icon color */
+  background-color: transparent;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  margin: 2px 5px; /* Update the margin to reduce horizontal space while keeping vertical space */
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
   
   
 .menu-bar button span {
@@ -70,9 +69,11 @@
   }
   
   .playlist-card img {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* Decrease the width to make the image smaller */
+    height: 100px; /* Decrease the height to maintain the aspect ratio */
     border-radius: 50%;
+    object-fit: cover; /* Ensure the image maintains its aspect ratio and covers the entire area */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to the image */
   }
   
   .playlist-card h3 {

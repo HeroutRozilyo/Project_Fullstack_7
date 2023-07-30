@@ -1,10 +1,13 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const { getAllSong, addSong, deleteSong } = require('../controllers/songController.js');
 
-// Require controller module
-const songController = require("../controllers/songController");
+// GET all songs
+router.get('/', getAllSong);
 
-// signup route
-router.get("/", songController.getAllSong);
+// DELETE song by ID
+router.delete('/:id', deleteSong);
+// POST add a new song
+router.post('/songs', addSong);
 
 module.exports = router;

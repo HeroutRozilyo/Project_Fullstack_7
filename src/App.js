@@ -9,8 +9,9 @@ import SongPage from "./js/SongPage.js";
 import PlayPlaylist from "./js/playlist_play.js";
 import FavoritePlaylist from "./js/favorite_playlist.js";
 import Toolbar from "./js/ToolBar.js";
-import Info from "./js/info.js"; // Use Info directly
-
+import Info from "./js/info.js";
+import AddSong from "./js/addSong.js";
+import AllSongs from "./js/AllSongs.js"
 function App() {
   return (
     <div>
@@ -21,6 +22,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/users/:username/main" element={<MainScreen />} />
+        <Route path="/allSongs" element={<AllSongs />} />
+        <Route path="/add-song" element={<AddSong />}/>
         <Route path="/users/:username/playlist/:id" element={<PlayListPage />} />
         <Route path="/users/:username/info" element={<Info />} />
         <Route path="/song/:id" element={<SongPage />} />
