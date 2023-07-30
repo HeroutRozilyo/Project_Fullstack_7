@@ -64,25 +64,27 @@ function AllSongs() {
 
   return (
     <div className="all-songs-page">
-      <h1>All Songs</h1>
+      <h1 className="page-title">All Songs</h1>
       {isManager && (
         <Link to="/add-song" className="add-song-button">
-          <FontAwesomeIcon icon={faPlus} className="add-song-icon" /> Add Song
+          <FontAwesomeIcon icon={faPlus} className="add-song-icon" />
+          Add Song
         </Link>
       )}
       <div className="songs-list">
         {songs.map((song) => (
-          <div key={song.SongID}    className="song-card">
-             
-           <FontAwesomeIcon
+          <div key={song.SongID} className="song-card">
+            <FontAwesomeIcon
               icon={faMusic}
-              onMouseDown={() => handleSongSelect(song.videoId)} // Use handleSongSelect here to navigate to the play page
+              onMouseDown={() => handleSongSelect(song.videoId)}
               className="song-icon"
             />
-            <h3>{song.SongName}</h3>
-            <p>{song.AristID}</p>
+            <h3 className="song-title">{song.SongName}</h3>
+            <p className="song-artist">{song.ArtistID}</p>
             {isManager && (
-              <button onClick={() => handleDeleteSong(song.SongID)}>  <FontAwesomeIcon icon={faTrashAlt} /> </button>
+              <button className="delete-song-button" onClick={() => handleDeleteSong(song.SongID)}>
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </button>
             )}
           </div>
         ))}

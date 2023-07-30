@@ -4,6 +4,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import '../css/info.css';
 import profilePicture from '../playListImage/profileImage.png';
 import { Link, useNavigate } from "react-router-dom";
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 function Info() {
@@ -315,8 +316,9 @@ function Info() {
 
       </div>
       <button className="delete-user-button" onClick={handleDeleteUser}>
-        Delete User and Data
-      </button>
+          <FontAwesomeIcon icon={faTrash} className="delete-icon" />
+          Delete User 
+        </button>
     </div>
   );
   
