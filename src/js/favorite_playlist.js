@@ -15,25 +15,25 @@ function FavoritePlaylist() {
   const history = useNavigate();
   const userData = JSON.parse(localStorage.getItem("user"));
 
+  const fetchPlayList = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/playList/Like/${userData.UserID}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setPlayList(data);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while fetching songs");
+    }
+  };
   useEffect(() => {
-    const fetchPlayList = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/playList/Like/${userData.UserID}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        setPlayList(data);
-      } catch (error) {
-        console.error(error);
-        alert("An error occurred while fetching songs");
-      }
-    };
     fetchPlayList();
   }, []);
 
@@ -64,7 +64,9 @@ function FavoritePlaylist() {
         }
       );
       const data = await response.json();
-      setPlayList(data);
+      if (response.ok) {
+        fetchPlayList();
+      }
     } catch (error) {
       console.error(error);
       alert("An error occurred while fetching songs");
