@@ -30,3 +30,36 @@ exports.loginUser = async (req, res) => {
     return res.json({ success: false });
   }
 };
+
+exports.updateUser = (userId, updatedFields) => {
+  if (updatedFields.CardNo && updatedFields.CardNo.length > 16) {
+    return reject(new Error("Card number is too long. Please provide a valid card number."));
+  }
+  if (!userId) {
+    return Promise.reject(new Error('Invalid user ID'));
+  }
+
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE useraccount SET ? WHERE UserID = ?', [updatedFields, userId], (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+exports.updatePassword = (userId, newPassword) => {
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE useraccount SET UserPassword = ? WHERE UserID = ?', [newPassword, userId], (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+

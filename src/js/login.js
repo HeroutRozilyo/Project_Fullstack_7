@@ -15,7 +15,7 @@ function Login() {
       // Show loading indicator
       setLoading(true);
 
-      const response = await fetch("http://localhost:3001/api/login", {
+      const response = await fetch("http://localhost:3001/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

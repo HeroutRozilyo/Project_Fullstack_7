@@ -10,6 +10,8 @@ const port = 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Connect to the database
 pool.connect((err) => {
   if (err) {
     console.error("Error connecting to the database: " + err.stack);
@@ -18,13 +20,11 @@ pool.connect((err) => {
   console.log("Connected to the database.");
 });
 
-// Use login routes
-app.use("/api/login", loginRoutes);
+// Use routes
+app.use("/api/user", loginRoutes);
 app.use("/api/register", signupRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/playList", playListRoutes);
-
-app.post("/api/playList/Like", (req, res) => {});
 
 // Start the server
 app.listen(port, () => {

@@ -1,0 +1,54 @@
+/* info.css */
+
+.profile {
+    display: flex;
+    align-items: center;
+    
+  justify-content: center;
+  }
+  
+  .profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 2px solid #1db954;
+  }
+  
+  .profile-info {
+    font-size: 18px;
+  }
+  
+  .edit-icon-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .edit-icon {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    font-size: 20px;
+    color: #1db954;
+    cursor: pointer;
+  }
+  
+  .editable-input {
+    border: 2px solid #1db954;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 5px;
+  }
+  
+  .save-button {
+    background-color: #1db954;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
