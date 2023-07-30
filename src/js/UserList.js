@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/UserList.css";
-import { useUserContext } from "../js/useContext.js"; 
+import { useUserContext } from "../js/useContext.js";
 function UserList() {
   const [users, setUsers] = useState([]);
   const { user, setSelectedUser } = useUserContext();
@@ -20,8 +20,8 @@ function UserList() {
     };
     fetchUsers();
   }, []);
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
+  const handleUserClick = (user1) => {
+    setSelectedUser(user1);
   };
   return (
     <div className="container">
@@ -37,12 +37,12 @@ function UserList() {
             >
               <img
                 className="avatar"
-                src={`https://avatars.dicebear.com/api/bottts/${user.UserID}.svg`}
+                src={`https://avatars.dicebear.com/api/bottts/${user1.UserID}.svg`}
                 alt="User Avatar"
               />
               <div className="user-info">
-                <span className="user-name">{user.UserName}</span>
-                <span className="user-email">{user.Email}</span>
+                <span className="user-name">{user1.UserName}</span>
+                <span className="user-email">{user1.Email}</span>
               </div>
             </Link>
           </li>
