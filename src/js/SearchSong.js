@@ -14,7 +14,12 @@ function SearchSongs() {
   useEffect(() => {
     // Check if the cache exists and is not empty
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
-    if (!cachedData || !cachedData.data || cachedData.data.length === 0) {
+    if (
+      !cachedData ||
+      !cachedData.data ||
+      cachedData.data.length === 0 ||
+      Date.now() - cachedData.timestamp > 10 * 60 * 1000
+    ) {
       // Fetch songs from the server and save to cache
       const fetchSongsAndCache = async () => {
         try {
@@ -55,6 +60,16 @@ function SearchSongs() {
     history(`/song/${songCode}`);
   };
 
+  const handleShowAllSongs = () => {
+    // Show all the song links when the user focuses on the input without typing anything
+    if (searchTerm.trim() === "") {
+      const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+      if (cachedData && cachedData.data) {
+        setSearchResults(cachedData.data);
+      }
+    }
+  };
+
   return (
     <div className="search-songs">
       <div
@@ -66,9 +81,12 @@ function SearchSongs() {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search for songs..."
-          onFocus={() => setIsInputFocused(true)}
+          onFocus={() => {
+            setIsInputFocused(true);
+            handleShowAllSongs(); // Show all songs when the input is focused
+          }}
           onBlur={() => setIsInputFocused(false)}
+          placeholder="Search for songs..."
         />
         <button className="search-button" onClick={handleSearch}>
           Search
