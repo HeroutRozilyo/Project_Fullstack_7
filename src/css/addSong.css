@@ -1,65 +1,79 @@
-.add-song-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    max-width: 400px;
-    margin: 0 auto;
+/* addSong.css */
+
+/* Spotify-style form container */
+.add-song-form.spotify-style {
+  width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.add-song-form.spotify-style h2 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form fields and labels */
+.add-song-form.spotify-style .form-group {
+  margin-bottom: 15px;
+}
+
+.add-song-form.spotify-style label {
+  color: #fff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.add-song-form.spotify-style input.spotify-input,
+.add-song-form.spotify-style select.spotify-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+}
+
+.add-song-form.spotify-style select.spotify-select {
+  cursor: pointer;
+}
+
+/* Submit button */
+.add-song-form.spotify-style .submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 60px;
+  padding-top: 50px;
+}
+
+.add-song-form.spotify-style button.spotify-button {
+  padding: 0px 6px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #1db954;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+
+.add-song-form.spotify-style button.spotify-button:hover {
+  background-color: #1ed760;
+}
+
+.add-song-form.spotify-style button.spotify-button:focus {
+  outline: none;
+}
+
+/* Additional styling for spacing and responsiveness */
+@media (max-width: 480px) {
+  .add-song-form.spotify-style {
+    width: 90%;
   }
-  
-  .add-song-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #1db954;
-  }
-  
-  .add-song-form form {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    width: 100%;
-  }
-  
-  .add-song-form label {
-    font-size: 14px;
-    margin-bottom: 10px;
-    color: #888;
-  }
-  
-  .add-song-form input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  
-  .add-song-form button {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .add-song-form button:hover {
-    background-color: #198d42;
-    transform: scale(1.05);
-  }
-  
-  
-  .add-song-form .submit-row {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 60px;
-  }
-  
+}

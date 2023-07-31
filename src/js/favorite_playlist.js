@@ -81,14 +81,14 @@ function FavoritePlaylist() {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-containerf">
       <h2>Your favorite playlists</h2>
       <div>
         {playList.map((playlist) => (
           <div>
             <button
               key={playlist.PlaylistID}
-              className="playlist-card"
+              className="playlist-cardf"
               onClick={() => handlePlaylistClick(playlist.PlaylistID)}
             >
               <img

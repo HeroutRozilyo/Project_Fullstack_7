@@ -1,53 +1,62 @@
-.page-container {
+/* favorite.css */
+
+.page-containerf {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  background-color: black;
 }
 
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: white;
-}
-
-.playlist-card {
+.playlist-cardf {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
   margin: 10px;
-  background-color: #f9f9f9;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-cardf img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.playlist-cardf h3 {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.playlist-cardf button {
+  margin-top: 10px;
+  background-color: #ff4f5a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.playlist-card:hover {
-  background-color: #e8e8e8;
+.playlist-cardf button:hover {
+  background-color: #e93c47;
 }
 
-.playlist-card img {
-  width: 150px;
-  height: 150px;
-  border-radius: 4px;
-  margin-bottom: 10px;
+.playlist-cardf button svg {
+  margin-right: 5px;
 }
 
-.playlist-card h3 {
-  font-size: 18px;
-  margin: 0;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 10px;
-  color: #888;
-  transition: color 0.3s ease;
-}
-
-button:hover {
-  color: #555;
+.page-containerf h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }

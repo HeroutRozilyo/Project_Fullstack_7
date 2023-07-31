@@ -3,21 +3,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import "../css/info.css";
 import profilePicture from "../playListImage/profileImage.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "./useContext.js"; // Replace the path with the correct location of UserContext.js
 
 function InfoAdmin() {
-  const { selectedUser } = useUserContext();
-  const [user, setUsers] = useState(selectedUser);
-
-  useEffect(() => {
-    setUsers(selectedUser);
-  }, [selectedUser]);
-
-  // const user=selectedUser;
+  const {selectedUser }= useUserContext();
+  const id=useParams().userID;
+   let user=selectedUser;
+   if(!user){
+    const storedUser = localStorage.getItem("userAdmin");
+  if (storedUser) {
+    user=JSON.parse(storedUser);
+   }
+  }
+  else{
+    localStorage.removeItem("userAdmin");
+    localStorage.setItem("userAdmin", JSON.stringify(user));
+  }
+   
   user.Dob = new Date(user.Dob).toISOString().split("T")[0];
   console.log(user);
   const history = useNavigate();
@@ -37,6 +43,21 @@ function InfoAdmin() {
     CardNo: user.CardNo,
     UserPassword: user.UserPassword,
   });
+  useEffect(() => {
+    // Create a copy of the 'user' object with the updated fields
+    const updatedUser = {
+      ...user,
+      UserName: updatedFields.UserName,
+      Email: updatedFields.Email,
+      Dob: updatedFields.Dob,
+      Gender: updatedFields.Gender,
+      CardNo: updatedFields.CardNo,
+      UserPassword: updatedFields.UserPassword,
+    };
+
+    // Update the 'user' variable
+    user=updatedUser;
+  }, [updatedFields]);
 
   const handleEdit = (field) => {
     setEditableFields((prevEditableFields) => ({
@@ -56,17 +77,27 @@ function InfoAdmin() {
         ...prevUpdatedFields,
         [field]: formattedDate,
       }));
+      setEditableFields((prevEditableField) => ({
+        ...prevEditableField,
+        [field]: formattedDate,
+      }));
     } else {
       setUpdatedFields((prevUpdatedFields) => ({
         ...prevUpdatedFields,
         [field]: value,
       }));
+      setEditableFields((prevEditableField) => ({
+        ...prevEditableField,
+        [field]: value,
+      }));
     }
+    localStorage.removeItem("userAdmin");
+    localStorage.setItem("userAdmin", JSON.stringify(updatedFields));
   };
   // Assuming this code is inside the component where you want to handle the save operation
   const handleSave = async (field) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/user/${user.UserID}`, {
+      const res = await fetch(`http://localhost:3001/api/user/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +129,7 @@ function InfoAdmin() {
   const handleDeleteUser = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/user/${user.UserID}`,
+        `http://localhost:3001/api/user/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -141,7 +172,7 @@ function InfoAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/api/user/password/${user.UserID}`,
+        `http://localhost:3001/api/user/password/${id}`,
         {
           method: "PUT",
           headers: {
@@ -172,7 +203,20 @@ function InfoAdmin() {
       alert(`Error: ${error.message}`);
     }
   };
+// Function to be executed before the page is refreshed
+// const handleBeforeUnload = () => {
+//   localStorage.setItem("userAdmin", JSON.stringify(updatedFields));
+// };
 
+// useEffect(() => {
+//   // Add the event listener for beforeunload
+//   window.addEventListener("beforeunload", handleBeforeUnload);
+
+//   // Clean up the event listener when the component unmounts
+//   return () => {
+//     window.removeEventListener("beforeunload", handleBeforeUnload);
+//   };
+// }, [updatedFields]); // Empty dependency array to ensure it runs only once
   return (
     <div className="profile">
       <div className="profile-picture">
