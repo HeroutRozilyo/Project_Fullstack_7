@@ -6,7 +6,7 @@ exports.getAllPlaylist = async (req, res) => {
       //  const query = `SELECT * from playlist`;
 
       const query =
-        "SELECT * FROM playlist WHERE UserID = 0 OR UserID = 876543210;";
+        "SELECT * FROM playlist WHERE UserID = 0 OR UserID = 483957943";
       //    "SELECT PlaylistID, MIN(PlaylistName) AS PlaylistName, MIN(nameIMAG) AS nameIMAG, MIN(UserID) AS UserID FROM playlist GROUP BY PlaylistID;";
       // Execute the query and handle the result
       pool.query(query, (error, results) => {
