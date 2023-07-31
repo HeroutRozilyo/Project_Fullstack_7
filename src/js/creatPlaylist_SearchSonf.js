@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +9,7 @@ function SearchSongCreat(props) {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isMouseOverResults, setIsMouseOverResults] = useState(false); // New state variable
   const CACHE_KEY = "songCache";
+  const searchRef = useRef(null); // Ref to the search container
 
   useEffect(() => {
     // Check if the cache exists and is not empty
@@ -45,6 +46,21 @@ function SearchSongCreat(props) {
     // Set the initial focus state to false when the component mounts
     setIsInputFocused(false);
   }, []);
+  useEffect(() => {
+    // Add event listener to the document for clicks outside the search component
+    const handleOutsideClick = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchResults([]); // Close the search results
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
 
   useEffect(() => {
     handleSearch();
@@ -76,7 +92,7 @@ function SearchSongCreat(props) {
   };
 
   return (
-    <div className="search-songs">
+    <div className="search-songs"  ref={searchRef}>
       <div className="search-input-container">
         <input
           type="text"

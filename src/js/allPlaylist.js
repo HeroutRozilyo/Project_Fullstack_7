@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/AllPlaylists.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function AllPlaylists() {
   const [playlists, setPlaylists] = useState([]);
@@ -10,25 +10,26 @@ function AllPlaylists() {
   const history = useNavigate();
   const userData = JSON.parse(localStorage.getItem("user"));
 
-  // Replace this with the API call to get all playlists from the server
+  const fetchPlaylists = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/playList/all", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setPlaylists(data);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while fetching playlists");
+    }
+  };
+
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/playList/all", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        setPlaylists(data);
-      } catch (error) {
-        console.error(error);
-        alert("An error occurred while fetching playlists");
-      }
-    };
     fetchPlaylists();
   }, []);
+
   if (!Array.isArray(playlists)) {
     return <p>Loading...</p>;
   }
@@ -42,6 +43,27 @@ function AllPlaylists() {
 
   const handleCreatePlaylist = () => {
     history(`/users/${userData.UserName}/playlist/creatMyPlaylist`);
+  };
+
+  const handleonDelete = async (playlist) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/playList/LikeD/${playlist.UserID}/${playlist.PlaylistID}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        fetchPlaylists();
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while deleting the playlist");
+    }
   };
 
   return (
@@ -68,6 +90,11 @@ function AllPlaylists() {
               icon={faPencilAlt}
               className="edit-icon"
               onClick={() => handleEditClick(playlist)}
+            />
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="delete-icon"
+              onClick={() => handleonDelete(playlist)}
             />
           </div>
         ))}
