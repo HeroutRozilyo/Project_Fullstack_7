@@ -27,6 +27,12 @@ function AllPlaylists() {
     fetchPlaylists();
   }, []);
 
+  const handlePlaylistClick = (playlist) => {
+    
+    localStorage.setItem("playlist", JSON.stringify(playlist));
+    history(`/users/:playlist.UserName/playlist/:playlist.PlaylistID`);
+  };
+
   return (
     <div className="all-playlists-page">
       <h1 className="page-title">All Playlists</h1>
@@ -38,12 +44,14 @@ function AllPlaylists() {
               src={require(`../playListImage/${playlist.nameIMAG}.png`)}
               alt={playlist.PlaylistName}
             />
-            <h3 className="playlist-title">{playlist.PlaylistName}</h3>
-            <p className="playlist-user">User: {playlist.UserName}</p>
-            <p className="playlist-description">Description: {playlist.Description}</p>
+            <div className="playlist-details">
+              <h3 className="playlist-title">{playlist.PlaylistName}</h3>
+              <p className="playlist-user">User: {playlist.UserName}</p>
+            
+            </div>
             <button
               className="view-button"
-              onClick={() => history(`/playlist/${playlist.PlaylistID}`)}
+              onClick={() => handlePlaylistClick(playlist)}
             >
               View Playlist
             </button>

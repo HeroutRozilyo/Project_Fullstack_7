@@ -116,43 +116,60 @@ function PlaylistPage() {
       `/users/${userData.UserName}/playlist/${playlist.PlaylistID}/play/${id}`
     );
   };
+  const isAdmin = userData.isAdmin;
 
-  return (
-    <div
-      className="page-container"
-      style={{ backgroundImage: `url(${imageurl})` }}
-    >
-      <div className="content-container">
-        <div className="playlist-section">
-          {playListSongs.map((song) => (
-            <div key={song.SongID} className="song-card">
-              <FontAwesomeIcon icon={faMusic} size="3x" />
-              <h3>{song.SongName}</h3>
-              <p>{song.SongLength}</p>
-              <button onClick={() => handleDetailsClick(song)}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-              </button>
-              <button onClick={() => handlePlaysing(song.videoId)}>
-                <FontAwesomeIcon icon={faPlay} />
-              </button>
+    return (
+      <div
+        className="page-container"
+        style={{ backgroundImage: `url(${imageurl})` }}
+      >
+        <div className="content-container">
+          { (
+            <div className="playlist-section">
+              {playListSongs.map((song) => (
+                <div key={song.SongID} className="song-card">
+                  <FontAwesomeIcon icon={faMusic} size="3x" />
+                  <h3>{song.SongName}</h3>
+                  <p>{song.SongLength}</p>
+                  <button onClick={() => handleDetailsClick(song)}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                  </button>
+                  <button onClick={() => handlePlaysing(song.videoId)}>
+                    <FontAwesomeIcon icon={faPlay} />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+  
+          <div className="buttons-container">
+            {isAdmin ? (
+              <>
+                {/* Condition for admin */}
+                <button className="love" onClick={handleLike}>
+                  <FontAwesomeIcon icon={faHeart} />
+                  <span>Mark as my favorite</span>
+                </button>
+                <button className="play-all-button" onClick={handlePlayPlaylist}>
+                  <FontAwesomeIcon icon={faPlay} />
+                  <span>Play All</span>
+                </button>
+              </>
+            ) : (
+              // Condition for non-admin
+              <button className="play-all-button" onClick={handlePlayPlaylist}>
+                <FontAwesomeIcon icon={faPlay} />
+                <span>Play All</span>
+              </button>
+            )}
+          </div>
+          {selectedSong && (
+            <SongDetails song={selectedSong} onClose={handleCloseDetails} />
+          )}
         </div>
-        <div className="buttons-container">
-          <button className="love" onClick={handleLike}>
-            <FontAwesomeIcon icon={faHeart} />
-            <span>Mark as my favorite</span>
-          </button>
-          <button className="play-all-button" onClick={handlePlayPlaylist}>
-            <FontAwesomeIcon icon={faPlay} />
-            <span>Play All</span>
-          </button>
-        </div>
-        {selectedSong && (
-          <SongDetails song={selectedSong} onClose={handleCloseDetails} />
-        )}
       </div>
-    </div>
-  );
-}
-export default PlaylistPage;
+    );
+  }
+  
+  export default PlaylistPage;
+  
