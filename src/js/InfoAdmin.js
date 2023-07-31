@@ -136,12 +136,12 @@ function InfoAdmin() {
 
       if (response.ok) {
         // Step 3: Clear the user data from local storage
-        localStorage.removeItem("user");
+       
 
         // Step 4: Redirect the user to the login page or any other desired page
         // (You can use react-router's useNavigate hook or history object to navigate)
         // Replace '/login' with the desired page URL
-        history("/login");
+        history("/admin/users");
       } else {
         throw new Error("Failed to delete user and data");
       }
