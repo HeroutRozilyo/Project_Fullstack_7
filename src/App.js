@@ -35,6 +35,10 @@ function App() {
           path="/users/:username/playlist/:id"
           element={<PlayListPage />}
         />
+        <Route
+          path="/playlist/:id"
+          element={<PlayListPage />}
+        />
         <Route path="/users/:username/info" element={<Info />} />
         <Route path="/song/:id" element={<SongPage />} />
         <Route

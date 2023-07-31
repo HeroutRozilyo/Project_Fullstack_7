@@ -150,14 +150,14 @@ function PlaylistPage() {
                   <FontAwesomeIcon icon={faHeart} />
                   <span>Mark as my favorite</span>
                 </button>
-                <button className="play-all-button" onClick={handlePlayPlaylist}>
+                <button className="play-all-button"onClick={() => handlePlaysing(firstSong.videoId)}>
                   <FontAwesomeIcon icon={faPlay} />
                   <span>Play All</span>
                 </button>
               </>
             ) : (
               // Condition for non-admin
-              <button className="play-all-button" onClick={handlePlayPlaylist}>
+              <button className="play-all-button" onClick={() => handlePlaysing(firstSong.videoId)}>
                 <FontAwesomeIcon icon={faPlay} />
                 <span>Play All</span>
               </button>

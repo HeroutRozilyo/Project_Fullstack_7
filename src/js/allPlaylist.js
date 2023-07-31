@@ -40,6 +40,10 @@ function AllPlaylists() {
       `/users/${userData.UserName}/playlist/creatMyPlaylist/${playlist.PlaylistID}`
     );
   };
+  const handleUpdateClick = (playlist) => {
+    localStorage.setItem("playlist", JSON.stringify(playlist));
+      history(`/playlist/${playlist.PlaylistID}`);
+  };
 
   const handleCreatePlaylist = () => {
     history(`/users/${userData.UserName}/playlist/creatMyPlaylist`);
@@ -82,7 +86,7 @@ function AllPlaylists() {
            
             <button
               className="view-button"
-              onClick={() => history(`/playlist/${playlist.PlaylistID}`)}
+              onClick={() =>handleUpdateClick(playlist)}
             >
               View Playlist
             </button>
