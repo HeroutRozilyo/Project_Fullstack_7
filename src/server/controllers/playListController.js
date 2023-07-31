@@ -30,9 +30,9 @@ exports.getAllPlaylistAll = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
       const query = `
-        SELECT playlist.*, user.UserName
-        FROM playlist
-        INNER JOIN user ON playlist.UserID = user.UserID;
+      SELECT playlist.*, useraccount.UserName
+      FROM playlist
+      INNER JOIN useraccount ON playlist.UserID = useraccount.UserID;
       `;
 
       // Execute the query and handle the result
