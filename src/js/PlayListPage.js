@@ -9,8 +9,11 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faInfoCircle, faPlay, faMusic } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faInfoCircle,
+  faPlay,
+  faMusic,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "../css/playlistPage.css";
 
@@ -35,7 +38,7 @@ function PlaylistPage() {
   const history = useNavigate();
   const playlist = JSON.parse(localStorage.getItem("playlist"));
   const userData = JSON.parse(localStorage.getItem("user"));
-  const imageurl=require(`../playListImage/${playlist.nameIMAG}.png`);
+  const imageurl = require(`../playListImage/${playlist.nameIMAG}.png`);
   console.log(playlist.PlaylistName);
   useEffect(() => {
     const fetchPlayList = async () => {
@@ -115,10 +118,11 @@ function PlaylistPage() {
   };
 
   return (
-    
-    <div className="page-container"style={{ backgroundImage: `url(${imageurl})` }}>
+    <div
+      className="page-container"
+      style={{ backgroundImage: `url(${imageurl})` }}
+    >
       <div className="content-container">
-       
         <div className="playlist-section">
           {playListSongs.map((song) => (
             <div key={song.SongID} className="song-card">
@@ -135,21 +139,20 @@ function PlaylistPage() {
           ))}
         </div>
         <div className="buttons-container">
-  <button className="love" onClick={handleLike}>
-    <FontAwesomeIcon icon={faHeart} />
-    <span>Mark as my favorite</span>
-  </button>
-  <button className="play-all-button" onClick={handlePlayPlaylist}>
-    <FontAwesomeIcon icon={faPlay} />
-    <span>Play All</span>
-  </button>
-</div>
+          <button className="love" onClick={handleLike}>
+            <FontAwesomeIcon icon={faHeart} />
+            <span>Mark as my favorite</span>
+          </button>
+          <button className="play-all-button" onClick={handlePlayPlaylist}>
+            <FontAwesomeIcon icon={faPlay} />
+            <span>Play All</span>
+          </button>
+        </div>
         {selectedSong && (
           <SongDetails song={selectedSong} onClose={handleCloseDetails} />
         )}
       </div>
     </div>
   );
-
 }
 export default PlaylistPage;

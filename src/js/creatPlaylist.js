@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import SearchSongCreat from "./creatPlaylist_SearchSonf.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
@@ -7,6 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 
 import "../css/creatPlaylist.css";
+import { async } from "q";
 
 function SongDetails({ song, onClose, onDelete }) {
   return (
@@ -27,18 +28,61 @@ function SongDetails({ song, onClose, onDelete }) {
 
 function MainScreen() {
   const history = useNavigate();
+  const location = useLocation();
 
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [user, setUser] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [PlaylistName, setPlaylistName] = useState("my_playlist");
+  const [PlaylistName, setPlaylistName] = useState("");
+  const userData = localStorage.getItem("user");
+
+  const deleteplay = async (playID) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/playList/LikeD/${userData.UserID}/${playID}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
       setUser(parsedUserData);
     }
+    try {
+      const currentURL = window.location.pathname;
+      const segments = currentURL.split("/");
+      const lastWord = segments[segments.length - 1];
+      if (lastWord != "creatMyPlaylist") {
+        const fetchPlayList = async () => {
+          const response = await fetch(
+            `http://localhost:3001/api/playList/${lastWord}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          setSelectedSongs(data);
+          if (data) {
+            deleteplay(lastWord);
+          }
+        };
+
+        fetchPlayList();
+      }
+    } catch (error) {}
   }, []);
 
   const handleSongSelect = (selectedSong) => {

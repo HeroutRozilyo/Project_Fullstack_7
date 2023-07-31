@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../css/favorite.css";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 function FavoritePlaylist() {
   const [playList, setPlayList] = useState([]);
@@ -73,6 +74,11 @@ function FavoritePlaylist() {
       alert("An error occurred while fetching songs");
     }
   };
+  const handleEditClick = (idplaylist) => {
+    history(
+      `/users/${userData.UserName}/playlist/creatMyPlaylist/${idplaylist}`
+    );
+  };
 
   return (
     <div className="page-container">
@@ -93,6 +99,9 @@ function FavoritePlaylist() {
             </button>
             <button onClick={() => handleonDelete(playlist.PlaylistID)}>
               <FontAwesomeIcon icon={faTrash} />
+            </button>
+            <button onClick={() => handleEditClick(playlist.PlaylistID)}>
+              <FontAwesomeIcon icon={faEdit} />
             </button>
           </div>
         ))}
