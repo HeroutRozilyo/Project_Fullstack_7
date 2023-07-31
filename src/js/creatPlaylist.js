@@ -1,3 +1,5 @@
+// MainScreen.jsx
+
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import SearchSongCreat from "./creatPlaylist_SearchSonf.js";
@@ -6,7 +8,7 @@ import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 
-import "../css/creatPlaylist.css";
+ //import "../css/creatPlaylist.css";
 import { async } from "q";
 
 function SongDetails({ song, onClose, onDelete }) {
@@ -16,10 +18,10 @@ function SongDetails({ song, onClose, onDelete }) {
       <h4>{"Artist: " + song.ArtistName}</h4>
       <h4>{"Length: " + song.SongLength}</h4>
       <h4>{"Genre: " + song.Genre}</h4>
-      <button className="close" onClick={onClose}>
+      <button className="closes" onClick={onClose}>
         <FontAwesomeIcon icon={faWindowClose} />
       </button>
-      <button className='deleteSong' onClick={() => onDelete(song)}>
+      <button className='deleteSongs' onClick={() => onDelete(song)}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
     </div>
@@ -36,8 +38,6 @@ function MainScreen() {
   const [PlaylistName, setPlaylistName] = useState("My_Playlist");
   const [edit,setEdit]=useState(false);
   const userData = localStorage.getItem("user");
-
-  
 
   useEffect(() => {
     if (userData) {
@@ -62,14 +62,12 @@ function MainScreen() {
           const data = await response.json();
           setSelectedSongs(data);
           if (data) {
-           
             setEdit(true);
           }
         };
 
         fetchPlayList();
         setPlaylistName(JSON.parse(localStorage.getItem("editfavName")));
-       
       }
     } catch (error) {}
   }, []);
@@ -108,14 +106,14 @@ function MainScreen() {
 
   const handleCreatMyPlaylist = async (e) => {
     e.preventDefault();
-  
+
     if (!edit) {
       const timestamp = Date.now(); // Get the current timestamp in milliseconds
       const userid = user.UserID;
       const playlistid = timestamp.toString().slice(-5);
       const playlistName = PlaylistName;
       const nameIMAG = Math.floor(Math.random() * 3) + 1;
-  
+
       try {
         const response = await fetch(
           "http://localhost:3001/api/playList/creatPlayList",
@@ -146,7 +144,7 @@ function MainScreen() {
       }
     } else {
       const playlistID = location.pathname.split("/").pop(); // Get the playlist ID from the URL
-  
+
       try {
         const response = await fetch(
           `http://localhost:3001/api/playList/updatePlaylist/${playlistID}`,
@@ -170,17 +168,15 @@ function MainScreen() {
         } else {
           history(`/users/${user.UserName}/main`);
         }
-        
       } catch (error) {
         console.error(error);
         alert("An error occurred while updating the playlist");
       }
     }
   };
-  
 
   return (
-    <div className="main-page">
+    <div className="main-pages">
       <div className="search-songs-section">
         <h2>Search Songs</h2>
         <SearchSongCreat onSongSelect={handleSongSelect} />
@@ -191,17 +187,17 @@ function MainScreen() {
           selectedSongs.map((song) => (
             <button
               key={song.SongID}
-              className="playlist-card"
+              className="playlist-cards"
               onClick={() => handleDetailsSong(song)}
             >
-              <h3 className="song-name">{song.SongName}</h3>
+              <h3s className="song-name">{song.SongName}</h3s>
             </button>
           ))
         ) : (
           <p>No songs selected</p>
         )}
         {selectedSongs.length > 0 && (
-          <div className="cc">
+          <div className="ccs">
             <input
               type="text"
               placeholder="Enter playlist name"
@@ -221,7 +217,7 @@ function MainScreen() {
         )}
       </div>
       {selected && (
-        <div className="song-details-container">
+        <div className="song-details-containers">
           <h2>Songs Details</h2>
           <SongDetails
             song={selected}
@@ -231,7 +227,7 @@ function MainScreen() {
         </div>
       )}
     </div>
-);
+  );
 }
 
 export default MainScreen;
