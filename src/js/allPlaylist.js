@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/AllPlaylists.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function AllPlaylists() {
   const [playlists, setPlaylists] = useState([]);
   const [isManager, setIsManager] = useState(false);
   const history = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   // Replace this with the API call to get all playlists from the server
   useEffect(() => {
@@ -30,6 +33,17 @@ function AllPlaylists() {
     return <p>Loading...</p>;
   }
 
+  const handleEditClick = (playlist) => {
+    localStorage.setItem("editfavName", JSON.stringify(playlist.PlaylistName));
+    history(
+      `/users/${userData.UserName}/playlist/creatMyPlaylist/${playlist.PlaylistID}`
+    );
+  };
+
+  const handleCreatePlaylist = () => {
+    history(`/users/${userData.UserName}/playlist/creatMyPlaylist`);
+  };
+
   return (
     <div className="all-playlists-page">
       <h1 className="page-title">All Playlists</h1>
@@ -43,17 +57,27 @@ function AllPlaylists() {
             />
             <h3 className="playlist-title">{playlist.PlaylistName}</h3>
             <p className="playlist-user">User: {playlist.UserName}</p>
-            <p className="playlist-description">
-              Description: {playlist.Description}
-            </p>
+           
             <button
               className="view-button"
               onClick={() => history(`/playlist/${playlist.PlaylistID}`)}
             >
               View Playlist
             </button>
+            <FontAwesomeIcon
+              icon={faPencilAlt}
+              className="edit-icon"
+              onClick={() => handleEditClick(playlist)}
+            />
           </div>
         ))}
+        <div className="create-new-playlist">
+          <FontAwesomeIcon
+            icon={faPlus}
+            className="create-icon"
+            onClick={handleCreatePlaylist}
+          />
+        </div>
       </div>
     </div>
   );

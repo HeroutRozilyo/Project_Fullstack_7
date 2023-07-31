@@ -233,3 +233,67 @@ exports.removeFromFavorite = async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching songs" });
   }
 };
+
+exports.updatePlaylist = async (req, res) => {
+  try {
+    const playlistID = req.params.id;
+    const { playlistName, selectedSongs } = req.body;
+
+    // Update the playlist name
+    pool.query(
+      "UPDATE playlist SET PlaylistName = ? WHERE PlaylistID = ?",
+      [playlistName, playlistID],
+      async (error, result) => {
+        if (error) {
+          console.error("Error updating playlist name:", error);
+          res.status(500).json({ success: false, message: "Failed to update playlist name" });
+        } else {
+          try {
+            // Delete existing songs in the playlist
+            await new Promise((resolve, reject) => {
+              pool.query(
+                "DELETE FROM contains WHERE PlaylistID = ?",
+                [playlistID],
+                (error, result) => {
+                  if (error) {
+                    console.error("Error deleting existing songs from playlist:", error);
+                    reject(error);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              );
+            });
+
+            // Insert selected songs into the playlist
+            const values = selectedSongs.map(song => [playlistID, song.SongID]);
+            await new Promise((resolve, reject) => {
+              pool.query(
+                "INSERT INTO contains (PlaylistID, SongID) VALUES ?",
+                [values],
+                (error, result) => {
+                  if (error) {
+                    console.error("Error inserting new songs into playlist:", error);
+                    reject(error);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              );
+            });
+
+            res.status(200).json({ success: true, message: "Playlist updated successfully" });
+          } catch (error) {
+            console.error("Error updating playlist:", error);
+            res.status(500).json({ success: false, message: "Failed to update playlist" });
+          }
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error updating playlist:", error);
+    res.status(500).json({ success: false, message: "Failed to update playlist" });
+  }
+};
+
+

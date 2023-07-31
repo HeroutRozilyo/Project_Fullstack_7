@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../css/SearchSong.css";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function SearchSongCreat(props) {
@@ -10,56 +7,57 @@ function SearchSongCreat(props) {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const searchRef = useRef();
-  const history = useNavigate();
+  const [isMouseOverResults, setIsMouseOverResults] = useState(false); // New state variable
+  const CACHE_KEY = "songCache";
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchTerm.trim() !== "" || isInputFocused) {
-        fetchSearchResults();
-      } else {
-        setSearchResults([]);
-      }
-    }, 500);
+    // Check if the cache exists and is not empty
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (
+      !cachedData ||
+      !cachedData.data ||
+      cachedData.data.length === 0 ||
+      Date.now() - cachedData.timestamp > 10 * 60 * 1000
+    ) {
+      // Fetch songs from the server and save to cache
+      const fetchSongsAndCache = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/api/songs`);
+          const data = await response.json();
+          const cacheData = {
+            timestamp: Date.now(),
+            data: data,
+          };
+          localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+          setSearchResults(data.slice(0, 10)); // Show the first 10 songs in the results
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, isInputFocused]);
+      fetchSongsAndCache();
+      const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
+      return () => clearInterval(interval);
+    } else {
+      setSearchResults(cachedData.data.slice(0, 10)); // Show the first 10 cached songs in the results
+    }
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchResults([]);
-        setIsInputFocused(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    // Set the initial focus state to false when the component mounts
+    setIsInputFocused(false);
   }, []);
 
-  const fetchSearchResults = async () => {
-    try {
-      setIsSearching(true);
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm]);
 
-      const response = await fetch(
-        `http://localhost:3001/api/songs?search=${searchTerm}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+  const handleSearch = () => {
+    // Perform search on the cached data
+    const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (cachedData && cachedData.data) {
+      const filteredResults = cachedData.data.filter((song) =>
+        song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-
-      const data = await response.json();
-      setSearchResults(data.slice(0, 10)); // Limit the number of results to 10 for performance
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while fetching songs");
-    } finally {
-      setIsSearching(false);
+      setSearchResults(filteredResults.slice(0, 10)); // Limit the number of results to 10 for performance
     }
   };
 
@@ -69,32 +67,50 @@ function SearchSongCreat(props) {
     props.onSongSelect(song);
   };
 
+  const handleInputBlur = () => {
+    if (!isMouseOverResults) {
+      // Close the search results if the mouse is not over them
+      setSearchResults([]);
+    }
+    setIsInputFocused(false);
+  };
+
   return (
     <div className="search-songs">
-      <div className="search-input-container" ref={searchRef}>
+      <div className="search-input-container">
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search for songs..."
-          onFocus={() => setIsInputFocused(true)}
-          onBlur={() => setIsInputFocused(false)}
+          onFocus={() => {
+            setIsInputFocused(true);
+            if (!searchTerm) {
+              // Show all the cached songs if the search term is empty
+              const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+              if (cachedData && cachedData.data) {
+                setSearchResults(cachedData.data.slice(0, 10));
+              }
+            }
+          }}
+          onBlur={handleInputBlur}
         />
-        <button className="search-button" onClick={fetchSearchResults}>
+        <button className="search-button" onClick={handleSearch}>
           Search
         </button>
       </div>
-      <div className="search-results">
+      <div
+        className="search-results"
+        onMouseEnter={() => setIsMouseOverResults(true)}
+        onMouseLeave={() => setIsMouseOverResults(false)}
+      >
         {isSearching ? (
           <p>Loading...</p>
         ) : (
           <ul>
             {searchResults.map((song) => (
-              <li
-                key={song.SongID}
-                onMouseDown={(e) => handleSongSelect(song, e)}
-              >
-                <button onClick={(e) => handleSongSelect(song, e)}>
+              <li key={song.SongID} onMouseDown={() => handleSongSelect(song)}>
+                <button onClick={() => handleSongSelect(song)}>
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
                 {song.SongName}
