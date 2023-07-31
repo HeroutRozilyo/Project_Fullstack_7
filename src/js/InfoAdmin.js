@@ -1,34 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import '../css/info.css';
-import profilePicture from '../playListImage/profileImage.png';
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import "../css/info.css";
+import profilePicture from "../playListImage/profileImage.png";
 import { Link, useNavigate } from "react-router-dom";
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "./useContext.js"; // Replace the path with the correct location of UserContext.js
 
 function InfoAdmin() {
-  // // Get the location object
-  // const location = useLocation();
-  // console.log(location.state);
-  // // Check if the user object is available in the state
-  // if (!location.state || !location.state.user) {
-  //   // Handle the case when the user object is not available
-  //   return <div>User not found.</div>;
-  // }
-
-  // // Destructure the user object from the state
-  // const { user } = location.state;
-
   const { selectedUser } = useUserContext();
-  
-  const user=selectedUser;
-  user.Dob = new Date(user.Dob).toISOString().split('T')[0];
+  const [user, setUsers] = useState(selectedUser);
+
+  useEffect(() => {
+    setUsers(selectedUser);
+  }, [selectedUser]);
+
+  // const user=selectedUser;
+  user.Dob = new Date(user.Dob).toISOString().split("T")[0];
   console.log(user);
-  const history=useNavigate();
+  const history = useNavigate();
   const [editableFields, setEditableFields] = useState({
     UserName: false,
     Email: false,
@@ -44,7 +36,6 @@ function InfoAdmin() {
     Gender: user.Gender,
     CardNo: user.CardNo,
     UserPassword: user.UserPassword,
-   
   });
 
   const handleEdit = (field) => {
@@ -56,11 +47,11 @@ function InfoAdmin() {
 
   const handleInputChange = (e, field) => {
     const { value } = e.target;
-  
+
     // Check if the field is 'Dob' (Date of Birth)
-    if (field === 'Dob') {
+    if (field === "Dob") {
       // Convert the date value to the format 'YYYY-MM-DD'
-      const formattedDate = new Date(value).toISOString().split('T')[0];
+      const formattedDate = new Date(value).toISOString().split("T")[0];
       setUpdatedFields((prevUpdatedFields) => ({
         ...prevUpdatedFields,
         [field]: formattedDate,
@@ -72,27 +63,26 @@ function InfoAdmin() {
       }));
     }
   };
- // Assuming this code is inside the component where you want to handle the save operation
- const handleSave = async (field) => {
+  // Assuming this code is inside the component where you want to handle the save operation
+  const handleSave = async (field) => {
     try {
-        
       const res = await fetch(`http://localhost:3001/api/user/${user.UserID}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           ...updatedFields,
           UserId: user.UserId, // Make sure to include the UserId in the request body
         }),
       });
       const data = await res.json();
-  
+
       if (res.ok) {
         // Update local storage with the updated field
         const updatedUser = { ...user, [field]: updatedFields[field] };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-  
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
         setEditableFields((prevEditableFields) => ({
           ...prevEditableFields,
           [field]: false,
@@ -107,12 +97,15 @@ function InfoAdmin() {
 
   const handleDeleteUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${user.UserID}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/user/${user.UserID}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         // Step 3: Clear the user data from local storage
@@ -129,8 +122,7 @@ function InfoAdmin() {
       alert(`Error: ${error.message}`);
     }
   };
-  
-  
+
   const handleGenderChange = (e) => {
     const { value } = e.target;
     setUpdatedFields((prevUpdatedFields) => ({
@@ -138,37 +130,40 @@ function InfoAdmin() {
       Gender: value,
     }));
   };
-  
+
   const handlePasswordSave = async () => {
     const { password, confirmPassword } = updatedFields;
-  
+
     if (password !== confirmPassword) {
-      alert('New password and password confirmation do not match');
+      alert("New password and password confirmation do not match");
       return;
     }
-  
+
     try {
-      const res = await fetch(`http://localhost:3001/api/user/password/${user.UserID}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password }),
-      });
+      const res = await fetch(
+        `http://localhost:3001/api/user/password/${user.UserID}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password }),
+        }
+      );
       const data = await res.json();
-  
+
       if (res.ok) {
         // Password updated successfully
-        alert("The password has been changed successfully!")
+        alert("The password has been changed successfully!");
         setEditableFields((prevEditableFields) => ({
           ...prevEditableFields,
           password: false,
         }));
-  
+
         setUpdatedFields((prevUpdatedFields) => ({
           ...prevUpdatedFields,
-          password: '',
-          confirmPassword: '',
+          password: "",
+          confirmPassword: "",
         }));
       } else {
         throw new Error(data.message);
@@ -177,7 +172,6 @@ function InfoAdmin() {
       alert(`Error: ${error.message}`);
     }
   };
-  
 
   return (
     <div className="profile">
@@ -187,15 +181,18 @@ function InfoAdmin() {
       <div className="profile-info">
         <p>
           <span className="edit-icon-container">
-            Name:{' '}
+            Name:{" "}
             {editableFields.UserName ? (
               <>
                 <input
                   type="text"
                   value={updatedFields.UserName}
-                  onChange={(e) => handleInputChange(e, 'UserName')}
+                  onChange={(e) => handleInputChange(e, "UserName")}
                 />
-                <button className="save-button" onClick={() => handleSave('UserName')}>
+                <button
+                  className="save-button"
+                  onClick={() => handleSave("UserName")}
+                >
                   Save
                 </button>
               </>
@@ -205,29 +202,29 @@ function InfoAdmin() {
                 <FontAwesomeIcon
                   icon={faPencilAlt}
                   className="edit-icon"
-                  onClick={() => handleEdit('UserName')}
+                  onClick={() => handleEdit("UserName")}
                 />
               </>
             )}
           </span>
         </p>
         <p>
-          <span className="edit-icon-container">
-            Email:{user.Email}
-
-          </span>
+          <span className="edit-icon-container">Email:{user.Email}</span>
         </p>
         <p>
           <span className="edit-icon-container">
-            Date of Birth:{' '}
+            Date of Birth:{" "}
             {editableFields.Dob ? (
               <>
                 <input
                   type="date"
                   value={updatedFields.Dob}
-                  onChange={(e) => handleInputChange(e, 'Dob')}
+                  onChange={(e) => handleInputChange(e, "Dob")}
                 />
-                <button className="save-button" onClick={() => handleSave('Dob')}>
+                <button
+                  className="save-button"
+                  onClick={() => handleSave("Dob")}
+                >
                   Save
                 </button>
               </>
@@ -237,54 +234,60 @@ function InfoAdmin() {
                 <FontAwesomeIcon
                   icon={faPencilAlt}
                   className="edit-icon"
-                  onClick={() => handleEdit('Dob')}
+                  onClick={() => handleEdit("Dob")}
                 />
               </>
             )}
           </span>
         </p>
         <p>
-  <span className="edit-icon-container">
-    Gender:{' '}
-    {editableFields.Gender ? (
-      <>
-        <select
-          id="Gender"
-          value={updatedFields.Gender} 
-          onChange={handleGenderChange}
-        >
-          <option value="">Select Gender</option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-        <button className="save-button" onClick={() => handleSave('Gender')}>
-          Save
-        </button>
-      </>
-    ) : (
-      <>
-        {user.Gender === 'M' ? 'Male' : 'Female'}
-        <FontAwesomeIcon
-          icon={faPencilAlt}
-          className="edit-icon"
-          onClick={() => handleEdit('Gender')}
-        />
-      </>
-    )}
-  </span>
-</p>
+          <span className="edit-icon-container">
+            Gender:{" "}
+            {editableFields.Gender ? (
+              <>
+                <select
+                  id="Gender"
+                  value={updatedFields.Gender}
+                  onChange={handleGenderChange}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                </select>
+                <button
+                  className="save-button"
+                  onClick={() => handleSave("Gender")}
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                {user.Gender === "M" ? "Male" : "Female"}
+                <FontAwesomeIcon
+                  icon={faPencilAlt}
+                  className="edit-icon"
+                  onClick={() => handleEdit("Gender")}
+                />
+              </>
+            )}
+          </span>
+        </p>
 
         <p>
           <span className="edit-icon-container">
-            Card Number:{' '}
+            Card Number:{" "}
             {editableFields.CardNo ? (
               <>
                 <input
                   type="text"
                   value={updatedFields.CardNo}
-                  onChange={(e) => handleInputChange(e, 'CardNo')}
+                  onChange={(e) => handleInputChange(e, "CardNo")}
                 />
-                <button className="save-button" onClick={() => handleSave('CardNo')}>
+                <button
+                  className="save-button"
+                  onClick={() => handleSave("CardNo")}
+                >
                   Save
                 </button>
               </>
@@ -294,7 +297,7 @@ function InfoAdmin() {
                 <FontAwesomeIcon
                   icon={faPencilAlt}
                   className="edit-icon"
-                  onClick={() => handleEdit('CardNo')}
+                  onClick={() => handleEdit("CardNo")}
                 />
               </>
             )}
@@ -302,20 +305,20 @@ function InfoAdmin() {
         </p>
         <p>
           <span className="edit-icon-container">
-            Password:{' '}
+            Password:{" "}
             {editableFields.password ? (
               <>
                 <input
                   type="password"
                   placeholder="New Password"
                   value={updatedFields.password}
-                  onChange={(e) => handleInputChange(e, 'password')}
+                  onChange={(e) => handleInputChange(e, "password")}
                 />
                 <input
                   type="password"
                   placeholder="Confirm New Password"
                   value={updatedFields.confirmPassword}
-                  onChange={(e) => handleInputChange(e, 'confirmPassword')}
+                  onChange={(e) => handleInputChange(e, "confirmPassword")}
                 />
                 <button className="save-button" onClick={handlePasswordSave}>
                   Save
@@ -325,20 +328,17 @@ function InfoAdmin() {
               <FontAwesomeIcon
                 icon={faPencilAlt}
                 className="edit-icon"
-                onClick={() => handleEdit('password')}
+                onClick={() => handleEdit("password")}
               />
             )}
           </span>
         </p>
-
       </div>
       <button className="delete-user-button" onClick={handleDeleteUser}>
         Delete User and Data
       </button>
     </div>
   );
-  
 }
-
 
 export default InfoAdmin;

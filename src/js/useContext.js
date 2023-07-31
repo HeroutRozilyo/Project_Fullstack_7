@@ -12,9 +12,7 @@ export function UserProvider({ children }) {
   const [selectedUser, setSelectedUser] = useState(null); // Make sure setSelectedUser is defined here
 
   return (
-    <UserContext.Provider
-      value={{ users, setUsers, selectedUser, setSelectedUser }}
-    >
+    <UserContext.Provider value={{ selectedUser, setSelectedUser }}>
       {children}
     </UserContext.Provider>
   );
