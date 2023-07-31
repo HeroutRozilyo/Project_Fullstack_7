@@ -13,13 +13,13 @@ function SongDetails({ song, onClose, onDelete }) {
   return (
     <div className="song-details">
       <h3>{"Name: " + song.SongName}</h3>
-      <h4>{"Artist: " + song.ArtistID}</h4>
+      <h4>{"Artist: " + song.ArtistName}</h4>
       <h4>{"Length: " + song.SongLength}</h4>
       <h4>{"Genre: " + song.Genre}</h4>
-      <button onClick={onClose}>
+      <button className="close" onClick={onClose}>
         <FontAwesomeIcon icon={faWindowClose} />
       </button>
-      <button onClick={() => onDelete(song)}>
+      <button className='deleteSong' onClick={() => onDelete(song)}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
     </div>
@@ -34,24 +34,10 @@ function MainScreen() {
   const [user, setUser] = useState([]);
   const [selected, setSelected] = useState(null);
   const [PlaylistName, setPlaylistName] = useState("My_Playlist");
+  const [edit,setEdit]=useState(false);
   const userData = localStorage.getItem("user");
 
-  const deleteplay = async (playID) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/playList/LikeD/${userData.UserID}/${playID}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
 
   useEffect(() => {
     if (userData) {
@@ -76,12 +62,14 @@ function MainScreen() {
           const data = await response.json();
           setSelectedSongs(data);
           if (data) {
-            deleteplay(lastWord);
+           
+            setEdit(true);
           }
         };
 
         fetchPlayList();
         setPlaylistName(JSON.parse(localStorage.getItem("editfavName")));
+       
       }
     } catch (error) {}
   }, []);
@@ -120,38 +108,76 @@ function MainScreen() {
 
   const handleCreatMyPlaylist = async (e) => {
     e.preventDefault();
-
-    const timestamp = Date.now(); // Get the current timestamp in milliseconds
-    const userid = user.UserID;
-    const playlistid = timestamp.toString().slice(-5);
-    const playlistName = PlaylistName;
-    const nameIMAG = Math.floor(Math.random() * 3) + 1;
-
-    try {
-      const response = await fetch(
-        "http://localhost:3001/api/playList/creatPlayList",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userid,
-            playlistid,
-            playlistName,
-            nameIMAG,
-            selectedSongs,
-          }),
+  
+    if (!edit) {
+      const timestamp = Date.now(); // Get the current timestamp in milliseconds
+      const userid = user.UserID;
+      const playlistid = timestamp.toString().slice(-5);
+      const playlistName = PlaylistName;
+      const nameIMAG = Math.floor(Math.random() * 3) + 1;
+  
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/playList/creatPlayList",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userid,
+              playlistid,
+              playlistName,
+              nameIMAG,
+              selectedSongs,
+            }),
+          }
+        );
+        const data = await response.json();
+        alert("Success! your playlist created");
+        if (user.isAdmin) {
+          history(`/admin/playlists`);
+        } else {
+          history(`/users/${user.UserName}/main`);
         }
-      );
-      const data = await response.json();
-      alert("Success! your playlist created");
-      history(`/users/${user.UserName}/main`);
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while fetching songs");
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while creating the playlist");
+      }
+    } else {
+      const playlistID = location.pathname.split("/").pop(); // Get the playlist ID from the URL
+  
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/playList/updatePlaylist/${playlistID}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              playlistName: PlaylistName,
+              selectedSongs: selectedSongs,
+            }),
+          }
+        );
+        const data = await response.json();
+        alert("Success! your playlist updated");
+        console.log(userData);
+        console.log("userData.isAdmin:", userData.isAdmin);
+        if (user.isAdmin) {
+          history(`/admin/playlists`);
+        } else {
+          history(`/users/${user.UserName}/main`);
+        }
+        
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while updating the playlist");
+      }
     }
   };
+  
 
   return (
     <div className="main-page">
@@ -168,7 +194,7 @@ function MainScreen() {
               className="playlist-card"
               onClick={() => handleDetailsSong(song)}
             >
-              <h3>{song.SongName}</h3>
+              <h3 className="song-name">{song.SongName}</h3>
             </button>
           ))
         ) : (
@@ -182,9 +208,15 @@ function MainScreen() {
               value={PlaylistName}
               onChange={(e) => setPlaylistName(e.target.value)}
             />
-            <button onClick={handleCreatMyPlaylist}>
-              {"create my playlist"}
-            </button>
+            {edit ? (
+              <button onClick={handleCreatMyPlaylist}>
+                {"Update My Playlist"}
+              </button>
+            ) : (
+              <button onClick={handleCreatMyPlaylist}>
+                {"Create My Playlist"}
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -199,7 +231,7 @@ function MainScreen() {
         </div>
       )}
     </div>
-  );
+);
 }
 
 export default MainScreen;
