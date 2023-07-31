@@ -143,7 +143,7 @@ function PlaylistPage() {
           )}
   
           <div className="buttons-container">
-            {isAdmin ? (
+            {!isAdmin ? (
               <>
                 {/* Condition for admin */}
                 <button className="love" onClick={handleLike}>

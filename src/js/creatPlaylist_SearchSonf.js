@@ -4,13 +4,13 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function SearchSongCreat(props) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSongs,setSelectedSongs]=useState([]);
+  const [selectedSongs, setSelectedSongs] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isMouseOverResults, setIsMouseOverResults] = useState(false); // New state variable
+  const [isMouseOverResults, setIsMouseOverResults] = useState(false);
+
   const CACHE_KEY = "songCache";
- 
 
   useEffect(() => {
     // Check if the cache exists and is not empty
@@ -50,14 +50,13 @@ function SearchSongCreat(props) {
     // Perform search on the cached data
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (cachedData && cachedData.data) {
-      const filteredResults = cachedData.data.filter((song) =>
-        song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
+      const filteredResults = cachedData.data.filter(
+        (song) =>
+          song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSearchResults(filteredResults); // Limit the number of results to 10 for performance
+      setSearchResults(filteredResults);
     }
   };
-
-  
 
   const handleShowAllSongs = () => {
     // Show all the song links when the user focuses on the input without typing anything
@@ -67,69 +66,79 @@ function SearchSongCreat(props) {
         setSearchResults(cachedData.data);
       }
     }
-  };  
-  const handleSongSelect = (selectedSong) => {
-    const isSongSelected = selectedSongs.find(
-      (song) => song.SongID === selectedSong.SongID
-    );
-
-    // If the song is not already in the list, add it
-    if (!isSongSelected) {
-      setSelectedSongs([...selectedSongs, selectedSong]);
-    } else {
-      // If the song is already in the list, you can show an alert or handle it as per your requirements
-      alert("This song is already in the playlist!");
-    }
   };
 
-// ... (previous code)
+  const handleSongSelect = (song) => {
+  
+    props.onSongSelect(song);
+  };
 
-return (
-  <div className="search-songs">
-    <div
-      className="search-input-container"
-      onMouseEnter={() => setIsMouseOverResults(true)}
-      onMouseLeave={() => setIsMouseOverResults(false)}
-    >
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onFocus={() => {
-          setIsInputFocused(true);
-          handleShowAllSongs(); // Show all songs when the input is focused
-        }}
-        onBlur={() => setIsInputFocused(false)}
-        placeholder="Search for songs..."
-      />
-      <button className="search-button" onClick={handleSearch}>
-        Search
-      </button>
-    </div>
-    {isInputFocused || isMouseOverResults? (
-      <div className="search-results">
-        {isSearching ? (
-          <p>Loading...</p>
-        ) : Array.isArray(searchResults) && searchResults.length > 0 ? (
-          <ul>
-            {searchResults.map((song) => (
-              <li key={song.SongID}>
-                <button onClick={() => handleSongSelect(song)}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-                {song.SongName}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-results">No results found.</p>
-        )}
+  useEffect(() => {
+    // Add event listener to the document for clicks
+    const handleDocumentClick = (event) => {
+      if (
+        !event.target.closest(".search-songs") && // Click outside the search-songs container
+        !event.target.closest(".search-input-container") // Click outside the search-input-container
+      ) {
+        setSearchResults([]);
+        setIsInputFocused(false);
+      }
+    };
+
+    document.addEventListener("click", handleDocumentClick);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
+
+  return (
+    <div className="search-songs">
+      <div
+        className="search-input-container"
+        onMouseEnter={() => setIsMouseOverResults(true)}
+        onMouseLeave={() => setIsMouseOverResults(false)}
+      >
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onFocus={() => {
+            setIsInputFocused(true);
+            handleShowAllSongs();
+          }}
+          onBlur={() => {
+            setIsInputFocused(false);
+          }}
+          placeholder="Search for songs..."
+        />
+        <button className="search-button" onClick={handleSearch}>
+          Search
+        </button>
       </div>
-    ) : null}
-  </div>
-);
-
-        }
+      {isInputFocused || isMouseOverResults || searchResults.length > 0 ? (
+        <div className="search-results">
+          {isSearching ? (
+            <p>Loading...</p>
+          ) : Array.isArray(searchResults) && searchResults.length > 0 ? (
+            <ul>
+              {searchResults.map((song) => (
+                <li key={song.SongID}>
+                  <button onClick={() => handleSongSelect(song)}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </button>
+                  {song.SongName}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-results">No results found.</p>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default SearchSongCreat;
-
