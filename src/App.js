@@ -15,6 +15,7 @@ import AllSongs from "./js/AllSongs.js";
 import InfoAdmin from "./js/InfoAdmin.js";
 import UserList from "./js/UserList.js";
 import AdminMain from "./js/AdminMainScreen.js"
+import AllPlaylist from "./js/allPlaylist.js";
 function App() {
   return (
     <div>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/users/:username/main" element={<MainScreen />} />
         <Route path="/admin/songs" element={<AllSongs />} />
         <Route path="/admin/users" element={<UserList />} />
+        <Route path="/admin/playlists" element={<AllPlaylist />} />
         <Route path="/add-song" element={<AddSong />} />
         <Route
           path="/users/:username/playlist/:id"

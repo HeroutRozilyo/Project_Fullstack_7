@@ -15,18 +15,29 @@ function Toolbar() {
     return null;
   }
 
+  // Check if the user is an admin
+  const isAdmin = user && user.isAdmin;
+
   return (
     <div className="toolbar">
       <ul className="menuBar">
         <li>
-          <NavLink
-            to={`/users/${user && user.UserName}/main`}
-            exact
-            className={({ isActive }) => (isActive ? "my-link" : null)}
-          >
-            <i className="toolbar-icon fas fa-home"></i>
-            Home
-          </NavLink>
+          {/* If the user is an admin, redirect to the admin page */}
+          {isAdmin ? (
+            <NavLink to={`/admin`} exact className={({ isActive }) => (isActive ? "my-link" : null)}>
+              <i className="toolbar-icon fas fa-home"></i>
+              Home
+            </NavLink>
+          ) : (
+            <NavLink
+              to={`/users/${user && user.UserName}/main`}
+              exact
+              className={({ isActive }) => (isActive ? "my-link" : null)}
+            >
+              <i className="toolbar-icon fas fa-home"></i>
+              Home
+            </NavLink>
+          )}
         </li>
         <li>
           <NavLink

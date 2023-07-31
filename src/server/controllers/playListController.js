@@ -26,6 +26,33 @@ exports.getAllPlaylist = async (req, res) => {
   }
 };
 
+exports.getAllPlaylistAll = async (req, res) => {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const query = `
+        SELECT playlist.*, user.UserName
+        FROM playlist
+        INNER JOIN user ON playlist.UserID = user.UserID;
+      `;
+
+      // Execute the query and handle the result
+      pool.query(query, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (result) {
+      res.status(200).json(result);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching playlists" });
+  }
+};
+
 exports.getAllPlayListSongs = async (req, res) => {
   try {
     const result = await new Promise((resolve, reject) => {
