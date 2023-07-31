@@ -33,7 +33,7 @@ function MainScreen() {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [user, setUser] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [PlaylistName, setPlaylistName] = useState("");
+  const [PlaylistName, setPlaylistName] = useState("My_Playlist");
   const userData = localStorage.getItem("user");
 
   const deleteplay = async (playID) => {
@@ -81,6 +81,7 @@ function MainScreen() {
         };
 
         fetchPlayList();
+        setPlaylistName(JSON.parse(localStorage.getItem("editfavName")));
       }
     } catch (error) {}
   }, []);

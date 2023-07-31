@@ -74,9 +74,10 @@ function FavoritePlaylist() {
       alert("An error occurred while fetching songs");
     }
   };
-  const handleEditClick = (idplaylist) => {
+  const handleEditClick = (playlist) => {
+    localStorage.setItem("editfavName", JSON.stringify(playlist.PlaylistName));
     history(
-      `/users/${userData.UserName}/playlist/creatMyPlaylist/${idplaylist}`
+      `/users/${userData.UserName}/playlist/creatMyPlaylist/${playlist.PlaylistID}`
     );
   };
 
@@ -100,7 +101,7 @@ function FavoritePlaylist() {
             <button onClick={() => handleonDelete(playlist.PlaylistID)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
-            <button onClick={() => handleEditClick(playlist.PlaylistID)}>
+            <button onClick={() => handleEditClick(playlist)}>
               <FontAwesomeIcon icon={faEdit} />
             </button>
           </div>

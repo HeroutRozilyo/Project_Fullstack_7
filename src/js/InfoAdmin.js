@@ -10,20 +10,19 @@ import { useLocation } from "react-router-dom";
 import { useUserContext } from "./useContext.js"; // Replace the path with the correct location of UserContext.js
 
 function InfoAdmin() {
-  const {selectedUser }= useUserContext();
-  const id=useParams().userID;
-   let user=selectedUser;
-   if(!user){
+  const { selectedUser } = useUserContext();
+  const id = useParams().userID;
+  let user = selectedUser;
+  if (!user) {
     const storedUser = localStorage.getItem("userAdmin");
-  if (storedUser) {
-    user=JSON.parse(storedUser);
-   }
-  }
-  else{
+    if (storedUser) {
+      user = JSON.parse(storedUser);
+    }
+  } else {
     localStorage.removeItem("userAdmin");
     localStorage.setItem("userAdmin", JSON.stringify(user));
   }
-   
+
   user.Dob = new Date(user.Dob).toISOString().split("T")[0];
   console.log(user);
   const history = useNavigate();
@@ -56,7 +55,7 @@ function InfoAdmin() {
     };
 
     // Update the 'user' variable
-    user=updatedUser;
+    user = updatedUser;
   }, [updatedFields]);
 
   const handleEdit = (field) => {
@@ -128,15 +127,12 @@ function InfoAdmin() {
 
   const handleDeleteUser = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/user/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:3001/api/user/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         // Step 3: Clear the user data from local storage
@@ -171,16 +167,13 @@ function InfoAdmin() {
     }
 
     try {
-      const res = await fetch(
-        `http://localhost:3001/api/user/password/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ password }),
-        }
-      );
+      const res = await fetch(`http://localhost:3001/api/user/password/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
       const data = await res.json();
 
       if (res.ok) {
@@ -203,20 +196,20 @@ function InfoAdmin() {
       alert(`Error: ${error.message}`);
     }
   };
-// Function to be executed before the page is refreshed
-// const handleBeforeUnload = () => {
-//   localStorage.setItem("userAdmin", JSON.stringify(updatedFields));
-// };
+  // Function to be executed before the page is refreshed
+  // const handleBeforeUnload = () => {
+  //   localStorage.setItem("userAdmin", JSON.stringify(updatedFields));
+  // };
 
-// useEffect(() => {
-//   // Add the event listener for beforeunload
-//   window.addEventListener("beforeunload", handleBeforeUnload);
+  // useEffect(() => {
+  //   // Add the event listener for beforeunload
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-//   // Clean up the event listener when the component unmounts
-//   return () => {
-//     window.removeEventListener("beforeunload", handleBeforeUnload);
-//   };
-// }, [updatedFields]); // Empty dependency array to ensure it runs only once
+  //   // Clean up the event listener when the component unmounts
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [updatedFields]); // Empty dependency array to ensure it runs only once
   return (
     <div className="profile">
       <div className="profile-picture">

@@ -41,7 +41,7 @@ function UserList() {
                 alt="User Avatar"
               />
               <div className="user-info">
-                <span className="user-name">{user1.UserName}</span>
+                <span className="user-name">{user1.userName}</span>
                 <span className="user-email">{user1.Email}</span>
               </div>
             </Link>
