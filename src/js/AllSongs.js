@@ -80,7 +80,7 @@ function AllSongs() {
               className="song-icon"
             />
             <h3 className="song-title">{song.SongName}</h3>
-            <p className="song-artist">{song.ArtistID}</p>
+            <p className="song-artist">{song.ArtistName}</p>
             {isManager && (
               <button className="delete-song-button" onClick={() => handleDeleteSong(song.SongID)}>
                 <FontAwesomeIcon icon={faTrashAlt} />

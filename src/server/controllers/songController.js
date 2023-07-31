@@ -22,7 +22,11 @@ exports.getAllSong = async (req, res) => {
       });
     } else {
       // If the search term is not provided or empty, fetch all songs
-      const query = "SELECT * FROM song";
+      const query = `
+  SELECT song.*, artist.ArtistName
+  FROM song
+  INNER JOIN artist ON song.ArtistID = artist.ArtistID;
+`;
 
       songs = await new Promise((resolve, reject) => {
         pool.query(query, (error, results) => {

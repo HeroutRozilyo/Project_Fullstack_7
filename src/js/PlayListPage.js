@@ -21,7 +21,7 @@ function SongDetails({ song, onClose }) {
   return (
     <div className="song-details">
       <h3>{"Name: " + song.SongName}</h3>
-      <h4>{"Artist: " + song.ArtistID}</h4>
+      <h4>{"Artist: " + song.ArtistName}</h4>
       <h4>{"Length: " + song.SongLength}</h4>
       <h4>{"Genre: " + song.Genre}</h4>
       <button onClick={onClose}>
