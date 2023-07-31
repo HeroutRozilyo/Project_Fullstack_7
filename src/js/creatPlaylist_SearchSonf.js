@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -7,10 +7,10 @@ function SearchSongCreat(props) {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isMouseOverResults, setIsMouseOverResults] = useState(false); // New state variable
-  const CACHE_KEY = "songCache";
-  const searchRef = useRef(null); // Ref to the search container
 
+  const CACHE_KEY = "songCache";
+   // Ref to the search container
+   
   useEffect(() => {
     // Check if the cache exists and is not empty
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -46,21 +46,24 @@ function SearchSongCreat(props) {
     // Set the initial focus state to false when the component mounts
     setIsInputFocused(false);
   }, []);
-  useEffect(() => {
-    // Add event listener to the document for clicks outside the search component
-    const handleOutsideClick = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchResults([]); // Close the search results
-      }
-    };
 
-    document.addEventListener("click", handleOutsideClick);
 
-    return () => {
-      // Remove the event listener when the component unmounts
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
+  
+  // useEffect(() => {
+  //   // Add event listener to the document for clicks outside the search component
+  //   // const handleOutsideClick = (event) => {
+  //   //   if (searchRef.current && !searchRef.current.contains(event.target)) {
+  //   //     setSearchResults([]); // Close the search results
+  //   //   }
+  //   // };
+
+  //   document.addEventListener("click", handleOutsideClick);
+
+  //   return () => {
+  //     // Remove the event listener when the component unmounts
+  //     document.removeEventListener("click", handleOutsideClick);
+  //   };
+  // }, []);
 
   useEffect(() => {
     handleSearch();
@@ -73,26 +76,20 @@ function SearchSongCreat(props) {
       const filteredResults = cachedData.data.filter((song) =>
         song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSearchResults(filteredResults.slice(0, 10)); // Limit the number of results to 10 for performance
+      setSearchResults(filteredResults); // Limit the number of results to 10 for performance
     }
   };
 
-  const handleSongSelect = (song) => {
+  const handleSongSelect = (song) => { 
     console.log("Selected Song:", song); // Add this line to check if the function is triggered and getting the song data.
     console.log("Song Name:", song.SongName);
     props.onSongSelect(song);
   };
 
-  const handleInputBlur = () => {
-    if (!isMouseOverResults) {
-      // Close the search results if the mouse is not over them
-      setSearchResults([]);
-    }
-    setIsInputFocused(false);
-  };
+  
 
   return (
-    <div className="search-songs"  ref={searchRef}>
+    <div className="search-songs"  >
       <div className="search-input-container">
         <input
           type="text"
@@ -109,7 +106,7 @@ function SearchSongCreat(props) {
               }
             }
           }}
-          onBlur={handleInputBlur}
+          onBlur={() => setIsInputFocused(false)} 
         />
         <button className="search-button" onClick={handleSearch}>
           Search
@@ -117,15 +114,15 @@ function SearchSongCreat(props) {
       </div>
       <div
         className="search-results"
-        onMouseEnter={() => setIsMouseOverResults(true)}
-        onMouseLeave={() => setIsMouseOverResults(false)}
+        // onMouseEnter={() => setIsMouseOverResults(true)}
+        // onMouseLeave={() => setIsMouseOverResults(false)}
       >
         {isSearching ? (
           <p>Loading...</p>
         ) : (
           <ul>
             {searchResults.map((song) => (
-              <li key={song.SongID} onMouseDown={() => handleSongSelect(song)}>
+              <li key={song.SongID} onMouseDown={(event) => handleSongSelect(song, event)}>
                 <button onClick={() => handleSongSelect(song)}>
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
