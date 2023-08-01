@@ -16,11 +16,9 @@ function ImageUploader() {
       .post("http://localhost:3001/upload", formData)
       .then((response) => {
         console.log(response.data);
-        // Handle successful response, e.g., display success message
       })
       .catch((error) => {
         console.error(error);
-        // Handle error, e.g., display error message
       });
   };
 

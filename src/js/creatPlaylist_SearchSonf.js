@@ -13,7 +13,6 @@ function SearchSongCreat(props) {
   const CACHE_KEY = "songCache";
 
   useEffect(() => {
-    // Check if the cache exists and is not empty
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (
       !cachedData ||
@@ -21,7 +20,6 @@ function SearchSongCreat(props) {
       cachedData.data.length === 0 ||
       Date.now() - cachedData.timestamp > 10 * 60 * 1000
     ) {
-      // Fetch songs from the server and save to cache
       const fetchSongsAndCache = async () => {
         try {
           const response = await fetch(`http://localhost:3001/api/songs`);
@@ -47,19 +45,16 @@ function SearchSongCreat(props) {
   }, [searchTerm]);
 
   const handleSearch = () => {
-    // Perform search on the cached data
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (cachedData && cachedData.data) {
-      const filteredResults = cachedData.data.filter(
-        (song) =>
-          song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
+      const filteredResults = cachedData.data.filter((song) =>
+        song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setSearchResults(filteredResults);
     }
   };
 
   const handleShowAllSongs = () => {
-    // Show all the song links when the user focuses on the input without typing anything
     if (searchTerm.trim() === "") {
       const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
       if (cachedData && cachedData.data) {
@@ -69,16 +64,14 @@ function SearchSongCreat(props) {
   };
 
   const handleSongSelect = (song) => {
-  
     props.onSongSelect(song);
   };
 
   useEffect(() => {
-    // Add event listener to the document for clicks
     const handleDocumentClick = (event) => {
       if (
-        !event.target.closest(".search-songs") && // Click outside the search-songs container
-        !event.target.closest(".search-input-container") // Click outside the search-input-container
+        !event.target.closest(".search-songs") &&
+        !event.target.closest(".search-input-container")
       ) {
         setSearchResults([]);
         setIsInputFocused(false);
@@ -88,7 +81,6 @@ function SearchSongCreat(props) {
     document.addEventListener("click", handleDocumentClick);
 
     return () => {
-      // Remove the event listener when the component unmounts
       document.removeEventListener("click", handleDocumentClick);
     };
   }, []);

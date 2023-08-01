@@ -8,7 +8,6 @@ exports.getAllPlaylist = async (req, res) => {
       const query =
         "SELECT * FROM playlist WHERE UserID = 0 OR UserID = 483957943";
       //    "SELECT PlaylistID, MIN(PlaylistName) AS PlaylistName, MIN(nameIMAG) AS nameIMAG, MIN(UserID) AS UserID FROM playlist GROUP BY PlaylistID;";
-      // Execute the query and handle the result
       pool.query(query, (error, results) => {
         if (error) {
           reject(error);
@@ -35,7 +34,6 @@ exports.getAllPlaylistAll = async (req, res) => {
       INNER JOIN useraccount ON playlist.UserID = useraccount.UserID;
       `;
 
-      // Execute the query and handle the result
       pool.query(query, (error, results) => {
         if (error) {
           reject(error);
@@ -49,7 +47,9 @@ exports.getAllPlaylistAll = async (req, res) => {
       res.status(200).json(result);
     }
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while fetching playlists" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching playlists" });
   }
 };
 
@@ -65,7 +65,6 @@ exports.getAllPlayListSongs = async (req, res) => {
     SELECT SongID FROM contains WHERE PlaylistID=${playID}
   );
 `;
-      // Execute the query and handle the result
       pool.query(query, (error, results) => {
         if (error) {
           reject(error);
@@ -132,7 +131,6 @@ exports.LikePlaylist = async (req, res) => {
   try {
     const { userid, playlistid, playlistName, nameIMAG } = req.body;
 
-    // Check if the playlist with given playlistid and userid already exists
     pool.query(
       `SELECT * FROM playlist WHERE PlaylistID = ? AND UserID = ?`,
       [playlistid, userid],
@@ -163,7 +161,6 @@ exports.LikePlaylist = async (req, res) => {
               }
             );
           } else {
-            // Combination already exists, handle the case as needed
             res.status(200).json({
               success: true,
               message: "Playlist already exists for the user.",
@@ -186,10 +183,9 @@ exports.getAllLikePlaylist = async (req, res) => {
         [userid],
         (err, rows) => {
           if (err) {
-            // <-- Corrected the variable name here
             reject(err);
           } else {
-            resolve(rows); // <-- Corrected the variable name here
+            resolve(rows);
           }
         }
       );
@@ -215,10 +211,9 @@ exports.removeFromFavorite = async (req, res) => {
         [playlistId, userId],
         (err, rows) => {
           if (err) {
-            // <-- Corrected the variable name here
             reject(err);
           } else {
-            resolve(rows); // <-- Corrected the variable name here
+            resolve(rows);
           }
         }
       );
@@ -239,24 +234,30 @@ exports.updatePlaylist = async (req, res) => {
     const playlistID = req.params.id;
     const { playlistName, selectedSongs } = req.body;
 
-    // Update the playlist name
     pool.query(
       "UPDATE playlist SET PlaylistName = ? WHERE PlaylistID = ?",
       [playlistName, playlistID],
       async (error, result) => {
         if (error) {
           console.error("Error updating playlist name:", error);
-          res.status(500).json({ success: false, message: "Failed to update playlist name" });
+          res
+            .status(500)
+            .json({
+              success: false,
+              message: "Failed to update playlist name",
+            });
         } else {
           try {
-            // Delete existing songs in the playlist
             await new Promise((resolve, reject) => {
               pool.query(
                 "DELETE FROM contains WHERE PlaylistID = ?",
                 [playlistID],
                 (error, result) => {
                   if (error) {
-                    console.error("Error deleting existing songs from playlist:", error);
+                    console.error(
+                      "Error deleting existing songs from playlist:",
+                      error
+                    );
                     reject(error);
                   } else {
                     resolve(result);
@@ -265,15 +266,20 @@ exports.updatePlaylist = async (req, res) => {
               );
             });
 
-            // Insert selected songs into the playlist
-            const values = selectedSongs.map(song => [playlistID, song.SongID]);
+            const values = selectedSongs.map((song) => [
+              playlistID,
+              song.SongID,
+            ]);
             await new Promise((resolve, reject) => {
               pool.query(
                 "INSERT INTO contains (PlaylistID, SongID) VALUES ?",
                 [values],
                 (error, result) => {
                   if (error) {
-                    console.error("Error inserting new songs into playlist:", error);
+                    console.error(
+                      "Error inserting new songs into playlist:",
+                      error
+                    );
                     reject(error);
                   } else {
                     resolve(result);
@@ -282,18 +288,25 @@ exports.updatePlaylist = async (req, res) => {
               );
             });
 
-            res.status(200).json({ success: true, message: "Playlist updated successfully" });
+            res
+              .status(200)
+              .json({
+                success: true,
+                message: "Playlist updated successfully",
+              });
           } catch (error) {
             console.error("Error updating playlist:", error);
-            res.status(500).json({ success: false, message: "Failed to update playlist" });
+            res
+              .status(500)
+              .json({ success: false, message: "Failed to update playlist" });
           }
         }
       }
     );
   } catch (error) {
     console.error("Error updating playlist:", error);
-    res.status(500).json({ success: false, message: "Failed to update playlist" });
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to update playlist" });
   }
 };
-
-

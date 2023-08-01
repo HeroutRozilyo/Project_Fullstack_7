@@ -38,9 +38,7 @@ function Info() {
   const handleInputChange = (e, field) => {
     const { value } = e.target;
 
-    // Check if the field is 'Dob' (Date of Birth)
     if (field === "Dob") {
-      // Convert the date value to the format 'YYYY-MM-DD'
       const formattedDate = new Date(value).toISOString().split("T")[0];
       setUpdatedFields((prevUpdatedFields) => ({
         ...prevUpdatedFields,
@@ -53,7 +51,6 @@ function Info() {
       }));
     }
   };
-  // Assuming this code is inside the component where you want to handle the save operation
   const handleSave = async (field) => {
     try {
       const res = await fetch(`http://localhost:3001/api/user/${user.UserID}`, {
@@ -63,13 +60,12 @@ function Info() {
         },
         body: JSON.stringify({
           ...updatedFields,
-          UserId: user.UserId, // Make sure to include the UserId in the request body
+          UserId: user.UserId,
         }),
       });
       const data = await res.json();
 
       if (res.ok) {
-        // Update local storage with the updated field
         const updatedUser = { ...user, [field]: updatedFields[field] };
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
@@ -101,9 +97,6 @@ function Info() {
         // Step 3: Clear the user data from local storage
         localStorage.removeItem("user");
 
-        // Step 4: Redirect the user to the login page or any other desired page
-        // (You can use react-router's useNavigate hook or history object to navigate)
-        // Replace '/login' with the desired page URL
         history("/login");
       } else {
         throw new Error("Failed to delete user and data");
@@ -143,7 +136,6 @@ function Info() {
       const data = await res.json();
 
       if (res.ok) {
-        // Password updated successfully
         alert("The password has been changed successfully!");
         setEditableFields((prevEditableFields) => ({
           ...prevEditableFields,

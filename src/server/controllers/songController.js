@@ -7,7 +7,6 @@ exports.getAllSong = async (req, res) => {
     let songs;
 
     if (searchTerm && searchTerm.trim() !== "") {
-      // If the search term is provided, perform the search
       const searchTermWithWildcard = `%${searchTerm}%`;
       const query = "SELECT * FROM song WHERE SongName LIKE ?";
 
@@ -21,7 +20,6 @@ exports.getAllSong = async (req, res) => {
         });
       });
     } else {
-      // If the search term is not provided or empty, fetch all songs
       const query = `
   SELECT song.*, artist.ArtistName
   FROM song
@@ -44,30 +42,26 @@ exports.getAllSong = async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching songs" });
   }
 };
-// Assuming you have the necessary imports and setup for your songController file
 
 exports.deleteSong = async (req, res) => {
   const songID = req.params.id;
 
   try {
-    // Find the song by its ID in the database
     const query = "SELECT * FROM song WHERE SongID = ?";
     const song = await new Promise((resolve, reject) => {
       pool.query(query, [songID], (error, results) => {
         if (error) {
           reject(error);
         } else {
-          resolve(results[0]); // Assuming SongID is unique, so there will be only one result
+          resolve(results[0]);
         }
       });
     });
 
-    // Check if the song exists in the database
     if (!song) {
       return res.status(404).json({ error: "Song not found" });
     }
 
-    // Delete the song from the database
     const deleteQuery = "DELETE FROM song WHERE SongID = ?";
     await new Promise((resolve, reject) => {
       pool.query(deleteQuery, [songID], (error) => {
@@ -94,7 +88,6 @@ exports.addSong = async (req, res) => {
   try {
     let artistID;
 
-    // Check if the provided artist already exists in the database
     const artistQuery = "SELECT * FROM artist WHERE ArtistName = ?";
     const artistExists = await new Promise((resolve, reject) => {
       pool.query(artistQuery, [ArtistID], (error, results) => {
@@ -107,10 +100,8 @@ exports.addSong = async (req, res) => {
     });
 
     if (artistExists) {
-      // If the artist exists, get the existing ArtistID
-      artistID = artistExists[0].ArtistID; // Use results here instead of artistExists
+      artistID = artistExists[0].ArtistID;
     } else {
-      // If the artist does not exist, create a new artist record
       const createArtistQuery = "INSERT INTO artist (ArtistName) VALUES (?)";
       const createArtistResult = await new Promise((resolve, reject) => {
         pool.query(createArtistQuery, [ArtistID], (error, result) => {
@@ -122,11 +113,9 @@ exports.addSong = async (req, res) => {
         });
       });
 
-      // Get the newly generated ArtistID
       artistID = createArtistResult.insertId;
     }
 
-    // Add the new song to the database
     const addSongQuery =
       "INSERT INTO song (ArtistID, SongName, SongLength, Genre, videoId) VALUES (?, ?, ?, ?, ?)";
     await new Promise((resolve, reject) => {

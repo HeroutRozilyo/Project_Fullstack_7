@@ -8,7 +8,7 @@ import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 
- //import "../css/creatPlaylist.css";
+//import "../css/creatPlaylist.css";
 import { async } from "q";
 
 function SongDetails({ song, onClose, onDelete }) {
@@ -21,7 +21,7 @@ function SongDetails({ song, onClose, onDelete }) {
       <button className="closes" onClick={onClose}>
         <FontAwesomeIcon icon={faWindowClose} />
       </button>
-      <button className='deleteSongs' onClick={() => onDelete(song)}>
+      <button className="deleteSongs" onClick={() => onDelete(song)}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
     </div>
@@ -36,7 +36,7 @@ function MainScreen() {
   const [user, setUser] = useState([]);
   const [selected, setSelected] = useState(null);
   const [PlaylistName, setPlaylistName] = useState("My_Playlist");
-  const [edit,setEdit]=useState(false);
+  const [edit, setEdit] = useState(false);
   const userData = localStorage.getItem("user");
 
   useEffect(() => {
@@ -77,11 +77,9 @@ function MainScreen() {
       (song) => song.SongID === selectedSong.SongID
     );
 
-    // If the song is not already in the list, add it
     if (!isSongSelected) {
       setSelectedSongs([...selectedSongs, selectedSong]);
     } else {
-      // If the song is already in the list, you can show an alert or handle it as per your requirements
       alert("This song is already in the playlist!");
     }
   };
@@ -108,7 +106,7 @@ function MainScreen() {
     e.preventDefault();
 
     if (!edit) {
-      const timestamp = Date.now(); // Get the current timestamp in milliseconds
+      const timestamp = Date.now();
       const userid = user.UserID;
       const playlistid = timestamp.toString().slice(-5);
       const playlistName = PlaylistName;

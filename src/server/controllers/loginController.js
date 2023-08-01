@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const pool = require("../config/database");
 
 exports.loginUser = async (req, res) => {
   const { Email, password } = req.body;
@@ -33,32 +33,42 @@ exports.loginUser = async (req, res) => {
 
 exports.updateUser = (userId, updatedFields) => {
   if (updatedFields.CardNo && updatedFields.CardNo.length > 16) {
-    return reject(new Error("Card number is too long. Please provide a valid card number."));
+    return reject(
+      new Error("Card number is too long. Please provide a valid card number.")
+    );
   }
   if (!userId) {
-    return Promise.reject(new Error('Invalid user ID'));
+    return Promise.reject(new Error("Invalid user ID"));
   }
 
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE useraccount SET ? WHERE UserID = ?', [updatedFields, userId], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    pool.query(
+      "UPDATE useraccount SET ? WHERE UserID = ?",
+      [updatedFields, userId],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
 exports.updatePassword = (userId, newPassword) => {
   return new Promise((resolve, reject) => {
-    pool.query('UPDATE useraccount SET UserPassword = ? WHERE UserID = ?', [newPassword, userId], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    pool.query(
+      "UPDATE useraccount SET UserPassword = ? WHERE UserID = ?",
+      [newPassword, userId],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
@@ -90,27 +100,28 @@ exports.deleteUserAndData = async (req, res) => {
       });
     });
 
-    // Return success response
-    res.status(200).json({ message: "User and related data deleted successfully" });
+    res
+      .status(200)
+      .json({ message: "User and related data deleted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "An error occurred while deleting the user and data" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the user and data" });
   }
 };
 exports.getAllUsers = async (req, res) => {
   try {
-    pool.query('SELECT * FROM useraccount', (error, results) => {
+    pool.query("SELECT * FROM useraccount", (error, results) => {
       if (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to fetch users' });
+        res.status(500).json({ message: "Failed to fetch users" });
       } else {
         res.json(results);
       }
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to fetch users' });
+    res.status(500).json({ message: "Failed to fetch users" });
   }
 };
-
-

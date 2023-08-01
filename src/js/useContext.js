@@ -9,7 +9,7 @@ export function useUserContext() {
 
 export function UserProvider({ children }) {
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null); // Make sure setSelectedUser is defined here
+  const [selectedUser, setSelectedUser] = useState(null);
 
   return (
     <UserContext.Provider value={{ selectedUser, setSelectedUser }}>

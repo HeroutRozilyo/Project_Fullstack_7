@@ -8,15 +8,13 @@ function Registration() {
   const urlServer = "http://localhost:3001/api";
   const [section, setSection] = useState(1);
   const [loading, setLoading] = useState(false);
-  // First section fields
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-const [cardNo,setCardNo]=useState("");
-  // Second section fields
+  const [cardNo, setCardNo] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
 
@@ -44,12 +42,10 @@ const [cardNo,setCardNo]=useState("");
     e.preventDefault();
 
     try {
-      
-      const userData = {  email, password, dob, gender, username,cardNo };
+      const userData = { email, password, dob, gender, username, cardNo };
       setLoading(true);
 
       const response = await fetch("http://localhost:3001/api/register", {
-        // Update the URL here
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +61,7 @@ const [cardNo,setCardNo]=useState("");
       const { success } = await response.json();
 
       if (success) {
-        history("/login")
+        history("/login");
       } else {
         throw new Error("Registration failed");
       }
@@ -132,7 +128,7 @@ const [cardNo,setCardNo]=useState("");
               placeholder="Date of Birth"
               required
             />
-             <input
+            <input
               type="text"
               value={cardNo}
               onChange={(e) => setCardNo(e.target.value)}

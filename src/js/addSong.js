@@ -5,7 +5,7 @@ function AddSongForm() {
   const [artistName, setArtistName] = useState("");
   const [songName, setSongName] = useState("");
   const [songLength, setSongLength] = useState("");
-  const [genre, setGenre] = useState("Pop"); // Set default value to "Pop"
+  const [genre, setGenre] = useState("Pop");
   const [videoId, setVideoId] = useState("");
 
   const handleSubmit = async (e) => {
@@ -30,7 +30,6 @@ function AddSongForm() {
         throw new Error("Failed to add song");
       }
 
-      // Song added successfully, you can show a success message or redirect to the all songs page
       alert("Song added successfully");
     } catch (error) {
       console.error(error);
@@ -38,7 +37,7 @@ function AddSongForm() {
     }
   };
 
-   return (
+  return (
     <div className="add-song-form spotify-style">
       <h2>Add a New Song</h2>
       <form onSubmit={handleSubmit}>

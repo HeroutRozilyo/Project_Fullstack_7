@@ -7,24 +7,25 @@ function Toolbar() {
   const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
 
-  // Check if the current route is either "/login" or "/register"
-  const isLoginOrRegister = location.pathname === "/login" || location.pathname === "/register";
+  const isLoginOrRegister =
+    location.pathname === "/login" || location.pathname === "/register";
 
-  // Don't render the toolbar if the current route is "/login" or "/register"
   if (isLoginOrRegister) {
     return null;
   }
 
-  // Check if the user is an admin
   const isAdmin = user && user.isAdmin;
 
   return (
     <div className="toolbar">
       <ul className="menuBar">
         <li>
-          {/* If the user is an admin, redirect to the admin page */}
           {isAdmin ? (
-            <NavLink to={`/admin`} exact className={({ isActive }) => (isActive ? "my-link" : null)}>
+            <NavLink
+              to={`/admin`}
+              exact
+              className={({ isActive }) => (isActive ? "my-link" : null)}
+            >
               <i className="toolbar-icon fas fa-home"></i>
               Home
             </NavLink>

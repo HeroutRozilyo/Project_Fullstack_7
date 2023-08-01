@@ -24,10 +24,10 @@ const SongPage = () => {
             data: data,
           };
           localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-          setSongList(data); // Set the state with the fetched data
-          setIsFetching(false); // Set isFetching to false after fetching
+          setSongList(data);
+          setIsFetching(false);
         } catch (error) {
-          setIsFetching(false); // Set isFetching to false in case of an error
+          setIsFetching(false);
           setError(error.message);
           console.error(error);
         }
@@ -37,14 +37,12 @@ const SongPage = () => {
       const interval = setInterval(fetchSongsAndCache, 10 * 60 * 1000); // 10 minutes interval
       return () => clearInterval(interval);
     } else {
-      // If data is already in cache, set the state with the cached data and stop fetching
-      setSongList(cachedData.data); // Set the state with the data property of cachedData
+      setSongList(cachedData.data);
       setIsFetching(false);
     }
   }, []);
 
   useEffect(() => {
-    // Filter the songs by the same singer when the id or songList changes
     handleSearch();
   }, [id, songList]);
 
@@ -63,7 +61,6 @@ const SongPage = () => {
         <YouTubePlayer videoId={id} />
         <div className="song-info">
           <h2>Now Playing</h2>
-          {/* Display song information like SongName, Artist, etc. */}
         </div>
       </div>
 

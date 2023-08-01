@@ -12,7 +12,6 @@ function SearchSongs() {
   const history = useNavigate();
 
   useEffect(() => {
-    // Check if the cache exists and is not empty
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (
       !cachedData ||
@@ -20,7 +19,6 @@ function SearchSongs() {
       cachedData.data.length === 0 ||
       Date.now() - cachedData.timestamp > 10 * 60 * 1000
     ) {
-      // Fetch songs from the server and save to cache
       const fetchSongsAndCache = async () => {
         try {
           const response = await fetch(`http://localhost:3001/api/songs`);
@@ -46,13 +44,12 @@ function SearchSongs() {
   }, [searchTerm]);
 
   const handleSearch = () => {
-    // Perform search on the cached data
     const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (cachedData && cachedData.data) {
       const filteredResults = cachedData.data.filter((song) =>
         song.SongName.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSearchResults(filteredResults); // Limit the number of results to 10 for performance
+      setSearchResults(filteredResults);
     }
   };
 
@@ -61,7 +58,6 @@ function SearchSongs() {
   };
 
   const handleShowAllSongs = () => {
-    // Show all the song links when the user focuses on the input without typing anything
     if (searchTerm.trim() === "") {
       const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
       if (cachedData && cachedData.data) {
@@ -74,8 +70,8 @@ function SearchSongs() {
     <div className="search-songs">
       <div
         className="search-input-container"
-        onMouseEnter={() => setIsMouseOverResults(true)} // Handle mouse over the search results
-        onMouseLeave={() => setIsMouseOverResults(false)} // Handle mouse leave the search results
+        onMouseEnter={() => setIsMouseOverResults(true)}
+        onMouseLeave={() => setIsMouseOverResults(false)}
       >
         <input
           type="text"
@@ -83,7 +79,7 @@ function SearchSongs() {
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => {
             setIsInputFocused(true);
-            handleShowAllSongs(); // Show all songs when the input is focused
+            handleShowAllSongs();
           }}
           onBlur={() => setIsInputFocused(false)}
           placeholder="Search for songs..."
@@ -92,7 +88,7 @@ function SearchSongs() {
           Search
         </button>
       </div>
-      {isInputFocused || isMouseOverResults ? ( // Only show the search results when either the input is focused or the mouse is over the results
+      {isInputFocused || isMouseOverResults ? (
         <div className="search-results">
           {isSearching ? (
             <p>Loading...</p>

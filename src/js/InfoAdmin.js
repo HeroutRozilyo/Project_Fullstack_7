@@ -7,8 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { useLocation } from "react-router-dom";
-import { useUserContext } from "./useContext.js"; // Replace the path with the correct location of UserContext.js
-
+import { useUserContext } from "./useContext.js";
 function InfoAdmin() {
   const { selectedUser } = useUserContext();
   const id = useParams().userID;
@@ -43,7 +42,6 @@ function InfoAdmin() {
     UserPassword: user.UserPassword,
   });
   useEffect(() => {
-    // Create a copy of the 'user' object with the updated fields
     const updatedUser = {
       ...user,
       UserName: updatedFields.UserName,
@@ -54,7 +52,6 @@ function InfoAdmin() {
       UserPassword: updatedFields.UserPassword,
     };
 
-    // Update the 'user' variable
     user = updatedUser;
   }, [updatedFields]);
 
@@ -68,9 +65,7 @@ function InfoAdmin() {
   const handleInputChange = (e, field) => {
     const { value } = e.target;
 
-    // Check if the field is 'Dob' (Date of Birth)
     if (field === "Dob") {
-      // Convert the date value to the format 'YYYY-MM-DD'
       const formattedDate = new Date(value).toISOString().split("T")[0];
       setUpdatedFields((prevUpdatedFields) => ({
         ...prevUpdatedFields,
@@ -93,7 +88,6 @@ function InfoAdmin() {
     localStorage.removeItem("userAdmin");
     localStorage.setItem("userAdmin", JSON.stringify(updatedFields));
   };
-  // Assuming this code is inside the component where you want to handle the save operation
   const handleSave = async (field) => {
     try {
       const res = await fetch(`http://localhost:3001/api/user/${id}`, {
@@ -103,13 +97,12 @@ function InfoAdmin() {
         },
         body: JSON.stringify({
           ...updatedFields,
-          UserId: user.UserId, // Make sure to include the UserId in the request body
+          UserId: user.UserId,
         }),
       });
       const data = await res.json();
 
       if (res.ok) {
-        // Update local storage with the updated field
         const updatedUser = { ...user, [field]: updatedFields[field] };
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
@@ -135,12 +128,6 @@ function InfoAdmin() {
       });
 
       if (response.ok) {
-        // Step 3: Clear the user data from local storage
-       
-
-        // Step 4: Redirect the user to the login page or any other desired page
-        // (You can use react-router's useNavigate hook or history object to navigate)
-        // Replace '/login' with the desired page URL
         history("/admin/users");
       } else {
         throw new Error("Failed to delete user and data");
@@ -177,7 +164,6 @@ function InfoAdmin() {
       const data = await res.json();
 
       if (res.ok) {
-        // Password updated successfully
         alert("The password has been changed successfully!");
         setEditableFields((prevEditableFields) => ({
           ...prevEditableFields,
