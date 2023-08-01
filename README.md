@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# Fullstack Song Playback System
+Main screen User:
+<img width="946" alt="image" src="https://github.com/HeroutRozilyo/projectfullstack7/assets/73179974/5d2bec53-5e31-4aa4-90cf-e8f602d89064">
+Add Playlist:
+<img width="957" alt="image" src="https://github.com/HeroutRozilyo/projectfullstack7/assets/73179974/cc543a91-9fc1-42de-b7b3-8fa4b2da0811">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Main Screen Admin
+<img width="959" alt="image" src="https://github.com/HeroutRozilyo/projectfullstack7/assets/73179974/46aaba6a-65bf-46af-95ed-8d8f8f578ec4">
 
-## Available Scripts
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+This project is the culmination of the Fullstack course delivered at the Lev Academic Center. The system is a complete client-server application that enables users to playback songs, manage playlists (general and personal), access user information, and perform various administrative tasks. The system is built using React for the client-side and Node.js with Express for the server-side. It utilizes MySQL as the database for efficient data management.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Client-Side Features
 
-### `npm test`
+- **User Interface**: The client-side boasts a fully functional and visually pleasing UI, providing an enjoyable user experience.
+- **Components**: The React-based client-side code is organized into logical components, ensuring a maintainable and scalable architecture.
+- **Routing**: The application utilizes well-defined paths on the client side for smooth navigation.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Communication Mechanisms
 
-### `npm run build`
+- **Fetch API**: The client-side accesses the server using the Fetch API to make well-defined REST API requests.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Server-Side Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Node.js and Express**: The server-side is built using Node.js with the help of the Express library for robust development.
+- **MySQL Database**: The system interacts with a MySQL database, featuring a clear and logical table architecture for efficient data management.
+- **File Management**: Files are appropriately used on the server-side when required.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### User Management
 
-### `npm run eject`
+- **User Types**: The system supports two types of users - clients and administrators - each with distinct permissions.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Functionality
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The song playback system provides the following functionality:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Client-Side:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Building and managing playlists (both general and personal)
+- Playback of songs
+- Searching for songs
+- Editing user data
 
-## Learn More
+### Administrator (Additional) Functionality:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Deleting users
+- Editing user data
+- Building and managing playlists
+- Adding and deleting songs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Installation and Setup
 
-### Code Splitting
+1. Clone the repository: `git clone https://github.com/your_username/fullstack-song-playback.git`
+2. Install client dependencies: `cd client && npm install`
+3. Install server dependencies: `cd ../server && npm install`
+4. Set up MySQL database and update server configuration accordingly.
+5. Start the server: `npm start` inside the `server` directory.
+6. Start the client: `npm start` inside the `client` directory.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thank you for using our Fullstack Song Playback System! Enjoy your music!
